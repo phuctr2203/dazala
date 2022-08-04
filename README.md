@@ -1,2 +1,2 @@
-<h1>E-Commerce Database Application</h1>
+<h1>Dazala E-Commerce Database System</h1>
 
