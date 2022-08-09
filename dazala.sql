@@ -16,7 +16,7 @@ CREATE TABLE vendor
     address VARCHAR(30) NOT NULL,
     latitude DECIMAL(10, 4) NOT NULL,
     longtitude DECIMAL(10, 4) NOT NULL,
-    username VARCHAR(16) NOT NULL,
+    username VARCHAR(16) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
 
@@ -35,6 +35,9 @@ DELIMITER ;
 
 insert into vendor(name, address, latitude, longtitude, username, password)
 value ('phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123');
+
+insert into vendor(name, address, latitude, longtitude, username, password)
+value ('dung', 'Hanoi', 15, 101, 'dung123', 'abc');
 
 #----- CREATE TABLE PRODUCT -----#
 
@@ -66,6 +69,9 @@ END$$
 DELIMITER ;
 
 insert into product (name, price, ven_id) values ('iphone', 200, 'VD001');
+insert into product (name, price, ven_id) values ('laptop', 1000, 'VD001');
+insert into product (name, price, ven_id) values ('apple', 50, 'VD002');
+insert into product (name, price, ven_id) values ('banana', 70, 'VD002');
 
 #----- CREATE TABLE CUSTOMER -----#
 
@@ -81,7 +87,7 @@ CREATE TABLE customer
     address VARCHAR(30) NOT NULL,
     latitude DECIMAL(10, 4) NOT NULL,
     longtitude DECIMAL(10, 4) NOT NULL,
-    username VARCHAR(16) NOT NULL,
+    username VARCHAR(16) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
 
@@ -103,8 +109,6 @@ value ('binh', 'Thanh Hoa', 11, 10, 'binh123', '12345');
 
 insert into customer(name, address, latitude, longtitude, username, password)
 value ('linh', 'Cu Ba', 151, 11, 'linh123', 'abc123');
-
-select * from customer;
 
 #----- CREATE TABLE ORDER -----#
 
@@ -140,12 +144,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-#----- DISPLAY PRODUCT (NEW TO OLD), LIMIT 2 PER PAGE -----#
-
-select * from product order by id desc limit 2;
-
 #----- CREATE USER AND ROLE -----#
-
 CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
 CREATE ROLE vendor;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dazala.product TO vendor;
@@ -157,3 +156,11 @@ CREATE ROLE customer;
 GRANT SELECT ON dazala.customer TO customer;
 GRANT SELECT ON dazala.product TO customer;
 GRANT customer TO 'customer'@'localhost';
+
+#----- SELECT COMMAND ----#
+select * from customer;
+select * from vendor;
+select * from product;
+
+#----- DISPLAY PRODUCT (NEW TO OLD), LIMIT 2 PER PAGE COMMAND -----#
+select * from product order by id desc limit 2;
