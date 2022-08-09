@@ -148,19 +148,24 @@ DELIMITER ;
 CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
 CREATE ROLE vendor;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dazala.product TO vendor;
-GRANT SELECT ON dazala.vendor TO vendor;
+GRANT SELECT, INSERT ON dazala.vendor TO vendor;
 GRANT vendor TO 'vendor'@'localhost';
 
 CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
 CREATE ROLE customer;
-GRANT SELECT ON dazala.customer TO customer;
+GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
 GRANT SELECT ON dazala.product TO customer;
 GRANT customer TO 'customer'@'localhost';
+
+
+#----------- GENERAL COMMAND ----------#
 
 #----- SELECT COMMAND ----#
 select * from customer;
 select * from vendor;
 select * from product;
+
+delete from customer where id = 'CS003';
 
 #----- DISPLAY PRODUCT (NEW TO OLD), LIMIT 2 PER PAGE COMMAND -----#
 select * from product order by id desc limit 2;
