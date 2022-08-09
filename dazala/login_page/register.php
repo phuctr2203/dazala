@@ -13,7 +13,7 @@ if (isset($_POST['act'])) {
     $role = $_POST['role'];
 
     $sql = "INSERT INTO $role(name, address, latitude, longtitude, username, password)
-    VALUES ('$name', '$address', $latitude, $longtitude, '$username', '$password'), $customer";
+    VALUES ('$name', '$address', $latitude, $longtitude, '$username', '$password')";
 
     if ($role == 'vendor') {
         $stmt = $vendor->query($sql);
