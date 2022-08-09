@@ -169,3 +169,23 @@ delete from customer where id = 'CS003';
 
 #----- DISPLAY PRODUCT (NEW TO OLD), LIMIT 2 PER PAGE COMMAND -----#
 select * from product order by id desc limit 2;
+
+#----- SEARCH PRODCUT BASED ON NAME AND PRICE -----#
+DELIMITER $$
+CREATE PROCEDURE search_product_based_on_name(IN input_product_name varchar(30))
+BEGIN
+    SELECT * FROM PRODUCT
+    WHERE NAME LIKE CONCAT(input_product_name,'%');
+END $$
+DELIMITER ;
+
+CALL search_product_based_on_name('iph');
+
+DELIMITER $$
+CREATE PROCEDURE search_product_based_on_price(IN input_product_price_start decimal(14,2), IN input_product_price_end decimal(14,2))
+BEGIN
+    SELECT * FROM PRODUCT WHERE PRICE BETWEEN input_product_price_start AND input_product_price_end;
+END $$
+DELIMITER ;
+
+CALL search_product_based_on_price(10, 200);
