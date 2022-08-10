@@ -134,12 +134,19 @@ ALTER TABLE orders
 ADD CONSTRAINT FK_order_cus_id
 FOREIGN KEY (cus_id) REFERENCES customer(id);
 
+#----- wait time trigger -----#
 DELIMITER $$
 CREATE TRIGGER tg_order_insert
 BEFORE INSERT ON orders
 FOR EACH ROW
 BEGIN
-  INSERT INTO order_seq VALUES (NULL);
+  DECLARE random_time TIME;
+  SET random_time = (SELECT SEC_TO_TIME(
+	FLOOR(
+	TIME_TO_SEC('00:00:10') + RAND() * (
+	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))));
+  DO SLEEP(random_time);
+  INSERT INTO orders_seq VALUES (NULL);
   SET NEW.id = CONCAT('OD', LPAD(LAST_INSERT_ID(), 3, '0'));
 END$$
 DELIMITER ;
@@ -189,3 +196,51 @@ END $$
 DELIMITER ;
 
 CALL search_product_based_on_price(10, 200);
+
+#------- Search vendor based on distance ------#
+DELIMITER $$
+CREATE PROCEDURE search_vendor_based_on_distance(IN input_distance decimal(10,4), IN user_lat decimal(10,4), IN user_lon decimal(10,4))
+BEGIN
+	SELECT * FROM vendor v
+	WHERE ((SELECT(111.111 *
+    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(user_lat))
+	* COS(RADIANS(v.latitude))
+	* COS(RADIANS(user_lon - v.longtitude))
+	+ SIN(RADIANS(user_lat))
+	* SIN(RADIANS(v.latitude))))) )) <= input_distance);
+END $$
+DELIMITER ;
+
+drop procedure search_vendor_based_on_distance;
+
+CALL search_vendor_based_on_distance(111.1110, 11, 10);
+
+SELECT (111.111 *
+    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(11))
+	* COS(RADIANS(12))
+	* COS(RADIANS(10 - 10))
+	+ SIN(RADIANS(11))
+	* SIN(RADIANS(12))))));
+    
+#---- Display Product of Particular Vendor ------#
+DELIMITER $$
+CREATE PROCEDURE show_product_of_particular_vendor(IN selected_vendor VARCHAR(30))
+BEGIN
+    SELECT * FROM PRODUCT WHERE VEN_ID = (SELECT ID FROM VENDOR
+    WHERE NAME = selected_vendor);
+END $$
+DELIMITER ;
+
+CALL show_product_of_particular_vendor('phuc');
+
+#----- Generate random second from 10 to 30 ----#
+SELECT SEC_TO_TIME(
+	FLOOR(
+	TIME_TO_SEC('00:00:10') + RAND() * (
+	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
+
+#----- Test Create orders with with time(seconds from 10 to 30) -----#
+insert into orders(order_status, total_price, prod_id, cus_id)
+values ('ready', 1000, 'PD002', 'CS002');
+
+SELECT * FROM ORDERS;
