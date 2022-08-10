@@ -2,7 +2,8 @@ CREATE DATABASE dazala;
 DROP DATABASE dazala;
 USE dazala;
 
-#----- CREATE TABLE VENDOR -----#
+#----- CREATE TABLE -----#
+#----- VENDOR -----#
 
 CREATE TABLE vendor_seq 
 (
@@ -20,9 +21,6 @@ CREATE TABLE vendor
     password VARCHAR(255) NOT NULL
 );
 
-ALTER TABLE vendor 
-ADD CONSTRAINT UQ_Lad_Long UNIQUE (latitude, longtitude);
-
 DELIMITER $$
 CREATE TRIGGER tg_vendor_insert
 BEFORE INSERT ON vendor
@@ -33,13 +31,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-insert into vendor(name, address, latitude, longtitude, username, password)
-value ('phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123');
-
-insert into vendor(name, address, latitude, longtitude, username, password)
-value ('dung', 'Hanoi', 15, 101, 'dung123', 'abc');
-
-#----- CREATE TABLE PRODUCT -----#
+#----- PRODUCT -----#
 
 CREATE TABLE product_seq 
 (
@@ -51,12 +43,9 @@ CREATE TABLE product
 	id VARCHAR(10) NOT NULL PRIMARY KEY DEFAULT '0',
 	name VARCHAR(30) NOT NULL,
 	price DECIMAL(14, 2) NOT NULL,
+    quantity INT NOT NULL,
     ven_id VARCHAR(10) NOT NULL
 );
-
-ALTER TABLE product
-ADD CONSTRAINT FK_product_ven_id 
-FOREIGN KEY (ven_id) REFERENCES vendor(id);
     
 DELIMITER $$
 CREATE TRIGGER tg_product_insert
@@ -68,12 +57,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-insert into product (name, price, ven_id) values ('iphone', 200, 'VD001');
-insert into product (name, price, ven_id) values ('laptop', 1000, 'VD001');
-insert into product (name, price, ven_id) values ('apple', 50, 'VD002');
-insert into product (name, price, ven_id) values ('banana', 70, 'VD002');
-
-#----- CREATE TABLE CUSTOMER -----#
+#----- CUSTOMER -----#
 
 CREATE TABLE customer_seq 
 (
@@ -91,9 +75,6 @@ CREATE TABLE customer
     password VARCHAR(255) NOT NULL
 );
 
-ALTER TABLE customer 
-ADD CONSTRAINT CS_Lad_Long UNIQUE (latitude, longtitude);
-
 DELIMITER $$
 CREATE TRIGGER tg_customer_insert
 BEFORE INSERT ON customer
@@ -104,13 +85,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-insert into customer(name, address, latitude, longtitude, username, password)
-value ('binh', 'Thanh Hoa', 11, 10, 'binh123', '12345');
-
-insert into customer(name, address, latitude, longtitude, username, password)
-value ('linh', 'Cu Ba', 151, 11, 'linh123', 'abc123');
-
-#----- CREATE TABLE ORDER -----#
+#----- ORDERS -----#
 
 CREATE TABLE orders_seq 
 (
@@ -120,23 +95,14 @@ CREATE TABLE orders_seq
 CREATE TABLE orders
 (
 	id VARCHAR(10) NOT NULL PRIMARY KEY DEFAULT '0',
-	order_status VARCHAR(30) NOT NULL,
-	total_price DECIMAL(14, 2) NOT NULL,
-    prod_id VARCHAR(10) NOT NULL,
-    cus_id VARCHAR(10) NOT NULL
+	orders_status VARCHAR(30) NOT NULL,
+	bill DECIMAL(14, 2),
+    cus_id VARCHAR(10) NOT NULL,
+    hub_id VARCHAR(10) NOT NULL
 );
 
-ALTER TABLE orders
-ADD CONSTRAINT FK_order_prod_id 
-FOREIGN KEY (prod_id) REFERENCES product(id);
-
-ALTER TABLE orders
-ADD CONSTRAINT FK_order_cus_id
-FOREIGN KEY (cus_id) REFERENCES customer(id);
-
-#----- wait time trigger -----#
 DELIMITER $$
-CREATE TRIGGER tg_order_insert
+CREATE TRIGGER tg_orders_insert
 BEFORE INSERT ON orders
 FOR EACH ROW
 BEGIN
@@ -147,9 +113,119 @@ BEGIN
 	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))));
   DO SLEEP(random_time);
   INSERT INTO orders_seq VALUES (NULL);
+  SET NEW.id = CONCAT('OR', LPAD(LAST_INSERT_ID(), 3, '0'));
+END$$
+DELIMITER ;
+
+#----- ORDERS DETAIL -----#
+CREATE TABLE orders_detail_seq 
+(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE orders_detail
+(
+	id VARCHAR(10) NOT NULL PRIMARY KEY DEFAULT '0',
+	quantity INT NOT NULL,
+	total_price DECIMAL(14, 2),
+    prod_id VARCHAR(10) NOT NULL,
+    orders_id VARCHAR(10) NOT NULL
+);
+
+DELIMITER $$
+CREATE TRIGGER tg_orders_detail_insert
+BEFORE INSERT ON orders_detail
+FOR EACH ROW
+BEGIN
+  INSERT INTO orders_detail_seq VALUES (NULL);
   SET NEW.id = CONCAT('OD', LPAD(LAST_INSERT_ID(), 3, '0'));
 END$$
 DELIMITER ;
+
+#----- DISTRIBUTION HUB -----#
+
+CREATE TABLE hub_seq 
+(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE hub
+(
+	id VARCHAR(10) NOT NULL PRIMARY KEY DEFAULT '0',
+	name VARCHAR(30) NOT NULL,
+    address VARCHAR(30) NOT NULL,
+    latitude DECIMAL(10, 4) NOT NULL,
+    longtitude DECIMAL(10, 4) NOT NULL
+);
+
+DELIMITER $$
+CREATE TRIGGER tg_hub_insert
+BEFORE INSERT ON hub
+FOR EACH ROW
+BEGIN
+  INSERT INTO hub_seq VALUES (NULL);
+  SET NEW.id = CONCAT('HB', LPAD(LAST_INSERT_ID(), 3, '0'));
+END$$
+DELIMITER ;
+
+#----- SHIPPER -----#
+CREATE TABLE shipper_seq 
+(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE shipper
+(
+	id VARCHAR(10) NOT NULL PRIMARY KEY DEFAULT '0',
+	name VARCHAR(30) NOT NULL,
+    username VARCHAR(16) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    hub_id VARCHAR(10)
+);
+
+DELIMITER $$
+CREATE TRIGGER tg_shipper_insert
+BEFORE INSERT ON shipper
+FOR EACH ROW
+BEGIN
+  INSERT INTO shipper_seq VALUES (NULL);
+  SET NEW.id = CONCAT('SP', LPAD(LAST_INSERT_ID(), 3, '0'));
+END$$
+DELIMITER ;
+
+#----- ALTER TABLE -----#
+ALTER TABLE vendor 
+ADD CONSTRAINT UQ_Lad_Long UNIQUE (latitude, longtitude);
+
+ALTER TABLE product
+ADD CONSTRAINT FK_product_ven_id 
+FOREIGN KEY (ven_id) REFERENCES vendor(id);
+
+ALTER TABLE customer 
+ADD CONSTRAINT CS_Lad_Long UNIQUE (latitude, longtitude);
+
+ALTER TABLE orders
+ADD CONSTRAINT FK_orders_hub_id 
+FOREIGN KEY (hub_id) REFERENCES hub(id);
+
+ALTER TABLE orders
+ADD CONSTRAINT FK_orders_cus_id
+FOREIGN KEY (cus_id) REFERENCES customer(id);
+
+ALTER TABLE orders_detail
+ADD CONSTRAINT FK_orders_detail_prod_id
+FOREIGN KEY (prod_id) REFERENCES product(id);
+
+ALTER TABLE orders_detail
+ADD CONSTRAINT FK_orders_detail_prders_id
+FOREIGN KEY (orders_id) REFERENCES orders(id);
+
+ALTER TABLE hub 
+ADD CONSTRAINT DH_Lad_Long UNIQUE (latitude, longtitude);
+
+ALTER TABLE shipper
+ADD CONSTRAINT FK_shipper_hub_id 
+FOREIGN KEY (hub_id) REFERENCES hub(id);
 
 #----- CREATE USER AND ROLE -----#
 CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
@@ -164,14 +240,44 @@ GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
 GRANT SELECT ON dazala.product TO customer;
 GRANT customer TO 'customer'@'localhost';
 
+CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
+CREATE ROLE shipper;
+GRANT SELECT, INSERT ON dazala.shipper TO shipper;
+GRANT shipper TO 'shipper'@'localhost';
 
-#----------- GENERAL COMMAND ----------#
+#-------- GENERAL COMMAND ----------#
 
 #----- SELECT COMMAND ----#
 select * from customer;
 select * from vendor;
 select * from product;
+select * from shipper;
+select * from hub;
 
+#----- INSERT COMMAND -----#
+insert into vendor(name, address, latitude, longtitude, username, password) values 
+('phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123'),
+('dung', 'Hanoi', 15, 101, 'dung123', 'abc');
+
+insert into product (name, price, quantity, ven_id) values 
+('iphone', 200, 5, 'VD001'),
+('laptop', 1000, 10, 'VD001'),
+('apple', 50, 100, 'VD002'),
+('banana', 70, 50, 'VD002');
+
+insert into customer(name, address, latitude, longtitude, username, password) values
+('binh', 'Thanh Hoa', 11, 10, 'binh123', '12345'),
+('linh', 'Cu Ba', 151, 11, 'linh123', 'abc123');
+
+insert into hub(name, address, latitude, longtitude) values
+('Grab', 'Nha Trang', 200, 200),
+('Uber', 'My Tho', 300, 300);
+
+insert into shipper(name, username, password, hub_id) values
+('Long', 'long123', 'nguvcl', 'HB001'),
+('Tuan', 'tuan123', 'ditme', 'HB002');
+
+#----- DETELE COMMAND -----#
 delete from customer where id = 'CS003';
 
 #----- DISPLAY PRODUCT (NEW TO OLD), LIMIT 2 PER PAGE COMMAND -----#
