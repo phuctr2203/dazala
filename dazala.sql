@@ -256,9 +256,9 @@ select * from hub;
 
 #----- INSERT COMMAND -----#
 insert into vendor(name, address, latitude, longtitude, username, password) values 
-('phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123'),
-('dung', 'Hanoi', 15, 101, 'dung123', 'abc'),
-('yasuo', 'Dak Lak', 69, 169, 'linh123', 'xyz');
+('Phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123'),
+('Dung', 'Hanoi', 15, 101, 'dung123', 'abc');
+('Tri Dang', 'New York', -80, -10, 'tri123', 'ilovecs');
 
 insert into product (name, price, quantity, ven_id) values 
 ('iphone', 200, 5, 'VD001'),
@@ -267,17 +267,19 @@ insert into product (name, price, quantity, ven_id) values
 ('banana', 70, 50, 'VD002');
 
 insert into customer(name, address, latitude, longtitude, username, password) values
-('binh', 'Thanh Hoa', 11, 10, 'binh123', '12345'),
-('linh', 'Cu Ba', 151, 11, 'linh123', 'abc123');
+('Binh', 'Thanh Hoa', 65, 121, 'binh123', '12345'),
+('Linh', 'Cu Ba', 50, -100, 'linh123', 'abc123');
+('Hung', 'Thailand', -35, 0, 'hung123', 'hung123');
 
 insert into hub(name, address, latitude, longtitude) values
-('Grab', 'Nha Trang', 20, 20),
-('Uber', 'My Tho', 30, 30),
-('Gojek', 'Can Tho', 69, 69);
+('Grab', 'Nha Trang', 10, 50),
+('Uber', 'My Tho', -10, -20);
+('GHTK', 'Ha Noi', 20, -30);
 
 insert into shipper(name, username, password, hub_id) values
 ('Long', 'long123', 'nguvcl', 'HB001'),
 ('Tuan', 'tuan123', 'ditme', 'HB002');
+('Ship', 'ship123', 'vailon', 'HB003');
 
 #----- DETELE COMMAND -----#
 delete from customer where id = 'CS003';
