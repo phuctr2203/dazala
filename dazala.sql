@@ -1,6 +1,24 @@
-CREATE DATABASE dazala;
 DROP DATABASE dazala;
+CREATE DATABASE dazala;
 USE dazala;
+
+#----- CREATE USER AND ROLE -----#
+CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
+CREATE ROLE vendor;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dazala.product TO vendor;
+GRANT SELECT, INSERT ON dazala.vendor TO vendor;
+GRANT vendor TO 'vendor'@'localhost';
+
+CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
+CREATE ROLE customer;
+GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
+GRANT SELECT ON dazala.product TO customer;
+GRANT customer TO 'customer'@'localhost';
+
+CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
+CREATE ROLE shipper;
+GRANT SELECT, INSERT ON dazala.shipper TO shipper;
+GRANT shipper TO 'shipper'@'localhost';
 
 #----- CREATE TABLE -----#
 #----- VENDOR -----#
@@ -227,24 +245,6 @@ ALTER TABLE shipper
 ADD CONSTRAINT FK_shipper_hub_id 
 FOREIGN KEY (hub_id) REFERENCES hub(id);
 
-#----- CREATE USER AND ROLE -----#
-CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
-CREATE ROLE vendor;
-GRANT SELECT, INSERT, UPDATE, DELETE ON dazala.product TO vendor;
-GRANT SELECT, INSERT ON dazala.vendor TO vendor;
-GRANT vendor TO 'vendor'@'localhost';
-
-CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
-CREATE ROLE customer;
-GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
-GRANT SELECT ON dazala.product TO customer;
-GRANT customer TO 'customer'@'localhost';
-
-CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
-CREATE ROLE shipper;
-GRANT SELECT, INSERT ON dazala.shipper TO shipper;
-GRANT shipper TO 'shipper'@'localhost';
-
 #-------- GENERAL COMMAND ----------#
 
 #----- SELECT COMMAND ----#
@@ -257,7 +257,8 @@ select * from hub;
 #----- INSERT COMMAND -----#
 insert into vendor(name, address, latitude, longtitude, username, password) values 
 ('phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123'),
-('dung', 'Hanoi', 15, 101, 'dung123', 'abc');
+('dung', 'Hanoi', 15, 101, 'dung123', 'abc'),
+('yasuo', 'Dak Lak', 69, 169, 'linh123', 'xyz');
 
 insert into product (name, price, quantity, ven_id) values 
 ('iphone', 200, 5, 'VD001'),
@@ -270,8 +271,9 @@ insert into customer(name, address, latitude, longtitude, username, password) va
 ('linh', 'Cu Ba', 151, 11, 'linh123', 'abc123');
 
 insert into hub(name, address, latitude, longtitude) values
-('Grab', 'Nha Trang', 200, 200),
-('Uber', 'My Tho', 300, 300);
+('Grab', 'Nha Trang', 20, 20),
+('Uber', 'My Tho', 30, 30),
+('Gojek', 'Can Tho', 69, 69);
 
 insert into shipper(name, username, password, hub_id) values
 ('Long', 'long123', 'nguvcl', 'HB001'),
