@@ -276,7 +276,7 @@ select * from hub;
 #----- INSERT COMMAND -----#
 insert into vendor(name, address, latitude, longtitude, username, password) values 
 ('Phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123'),
-('Dung', 'Hanoi', 15, 101, 'dung123', 'abc');
+('Dung', 'Hanoi', 15, 101, 'dung123', 'abc'),
 ('Tri Dang', 'New York', -80, -10, 'tri123', 'ilovecs');
 
 insert into product (name, price, quantity, ven_id) values 
@@ -287,17 +287,17 @@ insert into product (name, price, quantity, ven_id) values
 
 insert into customer(name, address, latitude, longtitude, username, password) values
 ('Binh', 'Thanh Hoa', 65, 121, 'binh123', '12345'),
-('Linh', 'Cu Ba', 50, -100, 'linh123', 'abc123');
+('Linh', 'Cu Ba', 50, -100, 'linh123', 'abc123'),
 ('Hung', 'Thailand', -35, 0, 'hung123', 'hung123');
 
 insert into hub(name, address, latitude, longtitude) values
 ('Grab', 'Nha Trang', 10, 50),
-('Uber', 'My Tho', -10, -20);
+('Uber', 'My Tho', -10, -20),
 ('GHTK', 'Ha Noi', 20, -30);
 
 insert into shipper(name, username, password, hub_id) values
 ('Long', 'long123', 'nguvcl', 'HB001'),
-('Tuan', 'tuan123', 'ditme', 'HB002');
+('Tuan', 'tuan123', 'ditme', 'HB002'),
 ('Ship', 'ship123', 'vailon', 'HB003');
 
 #----- DETELE COMMAND -----#
@@ -340,8 +340,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-drop procedure search_vendor_based_on_distance;
-
 CALL search_vendor_based_on_distance(111.1110, 11, 10);
 
 SELECT (111.111 *
@@ -367,9 +365,3 @@ SELECT SEC_TO_TIME(
 	FLOOR(
 	TIME_TO_SEC('00:00:10') + RAND() * (
 	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
-
-#----- Test Create orders with with time(seconds from 10 to 30) -----#
-insert into orders(order_status, total_price, prod_id, cus_id)
-values ('ready', 1000, 'PD002', 'CS002');
-
-SELECT * FROM ORDERS;
