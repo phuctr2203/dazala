@@ -7,16 +7,14 @@ session_start();
 if (isset($_POST['act'])) {
 
     $name = $_POST['name'];
-    $address = $_POST['address'];
-    $latitude = $_POST['latitude'];
-    $longtitude = $_POST['longtitude'];
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $hub_id = $_POST['hub_id'];
     
-    $sql = "INSERT INTO customer(name, address, latitude, longtitude, username, password) 
-    VALUES ('$name', '$address', $latitude, $longtitude, '$username', '$password')";
+    $sql = "INSERT INTO shipper(name, username, password, hub_id) 
+    VALUES ('$name', '$username', '$password', '$hub_id')";
     
-    $stmt = $customer->query($sql);
+    $stmt = $shipper->query($sql);
     $rows = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($stmt->rowCount() > 0) {
@@ -27,7 +25,7 @@ if (isset($_POST['act'])) {
     } else {
         echo '<script>
             alert("Register Failed");
-            window.location.href="../login_page/register/cus_register.php";
+            window.location.href="../login_page/register/ship_register.php";
         </script>';
     }
 }
@@ -65,20 +63,14 @@ if (isset($_POST['act'])) {
                     <input name="name" type="text" class="form-control" placeholder="Name" required>                    
                 </div>
                 <div class="form-group has-feedback">
-                    <input name="address" type="text" class="form-control" placeholder="Address" required>                    
-                </div>
-                <div class="form-group has-feedback">
-                    <input name="latitude" type="text" class="form-control" placeholder="Latitude" required>                    
-                </div>
-                <div class="form-group has-feedback">
-                    <input name="longtitude" type="text" class="form-control" placeholder="Longtitude" required>                    
-                </div>
-                <div class="form-group has-feedback">
                     <input name="username" type="text" class="form-control" placeholder="Username" autofocus required>                    
                 </div>
                 <div class="form-group has-feedback">
                     <input name="password" type="text" class="form-control" placeholder="Password" required>                    
                 </div>
+                <input type="checkbox" name="hub_id" value="HB001">Grab</input>
+                <input type="checkbox" name="hub_id" value="HB002">Uber</input>
+                <input type="checkbox" name="hub_id" value="HB003">GHTK</input>
                 <div class="row">
                     <div class="col-xs-6">
                         <button type="submit" name="act" value="INSERT" class="btn btn-primary btn-block btn-flat" style="background-color: maroon;">Register</button>
