@@ -211,9 +211,16 @@ BEGIN
 END$$
 DELIMITER ;
 
+
 #----- ALTER TABLE -----#
 ALTER TABLE vendor 
 ADD CONSTRAINT UQ_Lad_Long UNIQUE (latitude, longtitude);
+
+ALTER TABLE vendor
+ADD CONSTRAINT VEN_CHK_LAT CHECK (latitude between -90 and 90);
+
+ALTER TABLE vendor
+ADD CONSTRAINT VEN_CHK_LONG CHECK (longtitude between -180 and 180);
 
 ALTER TABLE product
 ADD CONSTRAINT FK_product_ven_id 
@@ -221,6 +228,12 @@ FOREIGN KEY (ven_id) REFERENCES vendor(id);
 
 ALTER TABLE customer 
 ADD CONSTRAINT CS_Lad_Long UNIQUE (latitude, longtitude);
+
+ALTER TABLE customer
+ADD CONSTRAINT CUS_CHK_LAT CHECK (latitude between -90 and 90);
+
+ALTER TABLE customer
+ADD CONSTRAINT CUS_CHK_LONG CHECK (longtitude between -180 and 180);
 
 ALTER TABLE orders
 ADD CONSTRAINT FK_orders_hub_id 
@@ -240,6 +253,12 @@ FOREIGN KEY (orders_id) REFERENCES orders(id);
 
 ALTER TABLE hub 
 ADD CONSTRAINT DH_Lad_Long UNIQUE (latitude, longtitude);
+
+ALTER TABLE hub
+ADD CONSTRAINT HUB_CHK_LAT CHECK (latitude between -90 and 90);
+
+ALTER TABLE hub
+ADD CONSTRAINT HUB_CHK_LONG CHECK (longtitude between -180 and 180);
 
 ALTER TABLE shipper
 ADD CONSTRAINT FK_shipper_hub_id 
