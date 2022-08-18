@@ -360,8 +360,91 @@ DELIMITER ;
 
 CALL show_product_of_particular_vendor('phuc');
 
+#----- trigger alert if order's quantity > stock's quantity ------#
+DELIMITER $$
+CREATE TRIGGER tg_add_products_on_orders_detail
+BEFORE INSERT ON orders_detail
+FOR EACH ROW
+BEGIN
+	DECLARE quantity_in_stock int;
+    DECLARE quantity_orders int;
+    SELECT quantity into quantity_in_stock from product where id = new.prod_id;
+    SELECT new.quantity into quantity_orders;
+    IF( quantity_in_stock < quantity_orders) THEN
+    SIGNAL SQLSTATE '45000' SET message_text = 'Cannot purchase this orders since it reaches out of quantity in stocks';
+    END IF;
+END $$
+DELIMITER ;
+
+#---- trigger to update price in orders----#
+DELIMITER $$
+CREATE TRIGGER tg_update_bill
+AFTER INSERT ON orders_detail
+FOR EACH ROW
+BEGIN
+	UPDATE orders
+    SET bill = (select sum(total_price) from orders_detail where orders_id = NEW.orders_id group by orders_id)
+    WHERE id = NEW.orders_id;
+END $$
+DELIMITER ;
+
+
+#----- trigger to add product -----#
+DELIMITER $$
+CREATE TRIGGER tg_add_products
+BEFORE INSERT ON orders
+FOR EACH ROW
+BEGIN
+	DECLARE ROW_NUM int;
+    SELECT count(*) into ROW_NUM from orders;
+END $$
+DELIMITER ;
+
+#--- TEST ----#
+insert into orders(orders_status, bill, cus_id, hub_id)
+values ('READY', 500, 'CS001', 'HB001'),
+	('READY', 50, 'CS002', 'HB002');
+
+insert into orders_detail(quantity, total_price, prod_id, orders_id)
+value (1, 500, 'PD001', 'OR007');
+
 #----- Generate random second from 10 to 30 ----#
 SELECT SEC_TO_TIME(
 	FLOOR(
 	TIME_TO_SEC('00:00:10') + RAND() * (
 	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
+    
+#------ Funtion returns random 10 - 30 seconds -----#
+SET GLOBAL log_bin_trust_function_creators = 1;
+DELIMITER $$
+CREATE FUNCTION random_secs()
+RETURNS TIME
+BEGIN
+	DECLARE rand_secs TIME;
+    SELECT SEC_TO_TIME(
+	FLOOR(
+	TIME_TO_SEC('00:00:10') + RAND() * (
+	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))) INTO rand_secs;
+    RETURN rand_secs;
+END $$
+DELIMITER ;
+
+SELECT random_secs(); #---- test function ---#
+
+#----- Function calculate distance based on Lat and Lon ------#
+DELIMITER $$
+CREATE FUNCTION cal_distance(lat_1 DECIMAL(10,4), lon_1 DECIMAL(10,4), lat_2 DECIMAL(10,4), lon_2 DECIMAL(10,4))
+RETURNS DECIMAL(10,4) NOT deterministic
+BEGIN
+	DECLARE distance DECIMAL(10,4);
+    SELECT(111.111 *
+    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(lat_1))
+	* COS(RADIANS(lat_2))
+	* COS(RADIANS(lon_1 - lon_2))
+	+ SIN(RADIANS(lat_1))
+	* SIN(RADIANS(lat_2)))))) INTO distance;
+    RETURN distance;
+END $$
+DELIMITER ;
+
+select cal_distance(11,10,12,10); #---- Test -----#
