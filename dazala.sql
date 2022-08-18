@@ -125,10 +125,7 @@ BEFORE INSERT ON orders
 FOR EACH ROW
 BEGIN
   DECLARE random_time TIME;
-  SET random_time = (SELECT SEC_TO_TIME(
-	FLOOR(
-	TIME_TO_SEC('00:00:10') + RAND() * (
-	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))));
+  SELECT random_secs() into random_time;
   DO SLEEP(random_time);
   INSERT INTO orders_seq VALUES (NULL);
   SET NEW.id = CONCAT('OR', LPAD(LAST_INSERT_ID(), 3, '0'));
@@ -331,16 +328,12 @@ DELIMITER $$
 CREATE PROCEDURE search_vendor_based_on_distance(IN input_distance decimal(10,4), IN user_lat decimal(10,4), IN user_lon decimal(10,4))
 BEGIN
 	SELECT * FROM vendor v
-	WHERE ((SELECT(111.111 *
-    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(user_lat))
-	* COS(RADIANS(v.latitude))
-	* COS(RADIANS(user_lon - v.longtitude))
-	+ SIN(RADIANS(user_lat))
-	* SIN(RADIANS(v.latitude))))) )) <= input_distance);
+	WHERE ((select cal_distance(user_lat, user_lon, v.latitude, v.longtitude)) <= input_distance);
 END $$
 DELIMITER ;
 
-CALL search_vendor_based_on_distance(111.1110, 11, 10);
+drop procedure search_vendor_based_on_distance;
+CALL search_vendor_based_on_distance(111.2, 11, 10);
 
 SELECT (111.111 *
     DEGREES(ACOS(LEAST(1.0, COS(RADIANS(11))
@@ -448,3 +441,21 @@ END $$
 DELIMITER ;
 
 select cal_distance(11,10,12,10); #---- Test -----#
+
+#----- Function calculate distance based on Lat and Lon ------#
+DELIMITER $$
+CREATE FUNCTION cal_distance(lat_1 DECIMAL(10,4), lon_1 DECIMAL(10,4), lat_2 DECIMAL(10,4), lon_2 DECIMAL(10,4))
+RETURNS DECIMAL(10,4) deterministic
+BEGIN
+	DECLARE distance DECIMAL(10,4);
+    SELECT(111.111 *
+    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(lat_1))
+	* COS(RADIANS(lat_2))
+	* COS(RADIANS(lon_1 - lon_2))
+	+ SIN(RADIANS(lat_1))
+	* SIN(RADIANS(lat_2)))))) INTO distance;
+    RETURN distance;
+END $$
+DELIMITER ;
+
+select cal_distance(11,10,12,10);
