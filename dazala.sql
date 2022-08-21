@@ -277,10 +277,33 @@ insert into vendor(name, address, latitude, longtitude, username, password) valu
 ('Tri Dang', 'New York', -80, -10, 'tri123', 'ilovecs');
 
 insert into product (name, price, quantity, ven_id) values 
-('iphone', 200, 5, 'VD001'),
-('laptop', 1000, 10, 'VD001'),
-('apple', 50, 100, 'VD002'),
-('banana', 70, 50, 'VD002');
+('Iphone X', 300, 5, 'VD001'),
+('Iphone 11', 350, 10, 'VD001'),
+('Iphone 11 Pro Max', 400, 5, 'VD001'),
+('Iphone 12 Pro', 450, 10, 'VD001'),
+('Iphone 12 Pro Max', 500, 5, 'VD001'),
+('Macbook Air M1', 1500, 10, 'VD001'),
+('Macbook Pro M1', 2000, 10, 'VD001'),
+('Airpod', 100, 10, 'VD001'),
+('Airpod Max', 250, 10, 'VD001'),
+('Apple', 10, 100, 'VD002'),
+('Banana', 15, 50, 'VD002'),
+('Passion Fruit', 17, 80, 'VD002'),
+('Raspbery', 5, 50, 'VD002'),
+('Grapefruit', 12, 100, 'VD002'),
+('Tangerine', 7, 150, 'VD002'),
+('Coconut', 20, 100, 'VD002'),
+('Pear', 15, 50, 'VD002'),
+('Guava', 13, 100, 'VD002'),
+('Papaya', 25, 50, 'VD002'),
+('Superstar Shoes', 70, 20, 'VD003'),
+('Stan Smith Shoes', 75, 50, 'VD003'),
+('Ultraboost 2022', 90, 10, 'VD003'),
+('Air Max Shoes', 120, 30, 'VD003'),
+('Jordan Slipper', 55, 20, 'VD003'),
+('Nike Mag', 5000, 5, 'VD003'),
+('Jordan 1', 150, 15, 'VD003');
+
 
 insert into customer(name, address, latitude, longtitude, username, password) values
 ('Binh', 'Thanh Hoa', 65, 121, 'binh123', '12345'),
@@ -302,6 +325,22 @@ delete from customer where id = 'CS003';
 
 #----- DISPLAY PRODUCT (NEW TO OLD), LIMIT 2 PER PAGE COMMAND -----#
 select * from product order by id desc limit 2;
+
+#----- Function calculate distance based on Lat and Lon ------#
+DELIMITER $$
+CREATE FUNCTION cal_distance(lat_1 DECIMAL(10,4), lon_1 DECIMAL(10,4), lat_2 DECIMAL(10,4), lon_2 DECIMAL(10,4))
+RETURNS DECIMAL(10,4) deterministic
+BEGIN
+	DECLARE distance DECIMAL(10,4);
+    SELECT(111.111 *
+    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(lat_1))
+	* COS(RADIANS(lat_2))
+	* COS(RADIANS(lon_1 - lon_2))
+	+ SIN(RADIANS(lat_1))
+	* SIN(RADIANS(lat_2)))))) INTO distance;
+    RETURN distance;
+END $$
+DELIMITER ;
 
 #----- SEARCH PRODCUT BASED ON NAME AND PRICE -----#
 DELIMITER $$
@@ -332,7 +371,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-drop procedure search_vendor_based_on_distance;
 CALL search_vendor_based_on_distance(111.2, 11, 10);
 
 SELECT (111.111 *
@@ -393,14 +431,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-#--- TEST ----#
-insert into orders(orders_status, bill, cus_id, hub_id)
-values ('READY', 500, 'CS001', 'HB001'),
-	('READY', 50, 'CS002', 'HB002');
-
-insert into orders_detail(quantity, total_price, prod_id, orders_id)
-value (1, 500, 'PD001', 'OR007');
-
 #----- Generate random second from 10 to 30 ----#
 SELECT SEC_TO_TIME(
 	FLOOR(
@@ -423,39 +453,5 @@ END $$
 DELIMITER ;
 
 SELECT random_secs(); #---- test function ---#
-
-#----- Function calculate distance based on Lat and Lon ------#
-DELIMITER $$
-CREATE FUNCTION cal_distance(lat_1 DECIMAL(10,4), lon_1 DECIMAL(10,4), lat_2 DECIMAL(10,4), lon_2 DECIMAL(10,4))
-RETURNS DECIMAL(10,4) NOT deterministic
-BEGIN
-	DECLARE distance DECIMAL(10,4);
-    SELECT(111.111 *
-    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(lat_1))
-	* COS(RADIANS(lat_2))
-	* COS(RADIANS(lon_1 - lon_2))
-	+ SIN(RADIANS(lat_1))
-	* SIN(RADIANS(lat_2)))))) INTO distance;
-    RETURN distance;
-END $$
-DELIMITER ;
-
-select cal_distance(11,10,12,10); #---- Test -----#
-
-#----- Function calculate distance based on Lat and Lon ------#
-DELIMITER $$
-CREATE FUNCTION cal_distance(lat_1 DECIMAL(10,4), lon_1 DECIMAL(10,4), lat_2 DECIMAL(10,4), lon_2 DECIMAL(10,4))
-RETURNS DECIMAL(10,4) deterministic
-BEGIN
-	DECLARE distance DECIMAL(10,4);
-    SELECT(111.111 *
-    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(lat_1))
-	* COS(RADIANS(lat_2))
-	* COS(RADIANS(lon_1 - lon_2))
-	+ SIN(RADIANS(lat_1))
-	* SIN(RADIANS(lat_2)))))) INTO distance;
-    RETURN distance;
-END $$
-DELIMITER ;
 
 select cal_distance(11,10,12,10);
