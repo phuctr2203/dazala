@@ -343,6 +343,27 @@ DELIMITER ;
 
 call cal_nearest_distance('PD001');
 
+#----- Generate random second from 10 to 30 ----#
+SELECT SEC_TO_TIME(
+	FLOOR(
+	TIME_TO_SEC('00:00:10') + RAND() * (
+	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
+    
+#------ Funtion returns random 10 - 30 seconds -----#
+SET GLOBAL log_bin_trust_function_creators = 1;
+DELIMITER $$
+CREATE FUNCTION random_secs()
+RETURNS TIME
+BEGIN
+	DECLARE rand_secs TIME;
+    SELECT SEC_TO_TIME(
+	FLOOR(
+	TIME_TO_SEC('00:00:10') + RAND() * (
+	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))) INTO rand_secs;
+    RETURN rand_secs;
+END $$
+DELIMITER ;
+
 #----- SEARCH PRODCUT BASED ON NAME AND PRICE -----#
 DELIMITER $$
 CREATE PROCEDURE search_product_based_on_name(IN input_product_name varchar(30))
@@ -409,25 +430,25 @@ BEGIN
 END $$
 DELIMITER ;
 
-#----- Generate random second from 10 to 30 ----#
-SELECT SEC_TO_TIME(
-	FLOOR(
-	TIME_TO_SEC('00:00:10') + RAND() * (
-	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
-    
-#------ Funtion returns random 10 - 30 seconds -----#
-SET GLOBAL log_bin_trust_function_creators = 1;
+#---- trigger to update quantity after the order was cancelled ---#
 DELIMITER $$
-CREATE FUNCTION random_secs()
-RETURNS TIME
+CREATE TRIGGER tg_update_quantity_if_orders_cancelled
+AFTER UPDATE ON orders
+FOR EACH ROW
 BEGIN
-	DECLARE rand_secs TIME;
-    SELECT SEC_TO_TIME(
-	FLOOR(
-	TIME_TO_SEC('00:00:10') + RAND() * (
-	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))) INTO rand_secs;
-    RETURN rand_secs;
+	DECLARE prod_quantity int;
+	IF NEW.orders_status = 'Cancel' THEN
+    SELECT quantity into prod_quantity from product where id = NEW.prod_id;
+    UPDATE product 
+    SET quantity = prod_quantity + 1 
+    WHERE id = NEW.prod_id AND prod_quantity > 0;
+    END IF;
 END $$
 DELIMITER ;
+
+UPDATE orders
+SET orders_status = 'Cancel' where id = 'OR001'; 
+
+#--- ---#
 
 
