@@ -227,6 +227,8 @@ FOREIGN KEY (prod_id) REFERENCES product(id);
 
 ALTER TABLE orders ALTER quantity SET DEFAULT 1;
 
+ALTER TABLE orders ALTER orders_status SET DEFAULT 'Ready';
+
 ALTER TABLE hub 
 ADD CONSTRAINT DH_Lad_Long UNIQUE (latitude, longtitude);
 
@@ -373,16 +375,22 @@ DELIMITER ;
 
 CALL show_product_of_particular_vendor('phuc');
 
-#----- trigger to add product -----#
+#----- trigger to update quantity after buy a product -----#
 DELIMITER $$
-CREATE TRIGGER tg_add_products
-BEFORE INSERT ON orders
+CREATE TRIGGER tg_update_quantity
+AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
-	DECLARE ROW_NUM int;
-    SELECT count(*) into ROW_NUM from orders;
+	DECLARE prod_quantity int;
+    SELECT quantity into prod_quantity from product where id = NEW.prod_id;
+    UPDATE product 
+    SET quantity = prod_quantity - 1 
+    WHERE id = NEW.prod_id AND prod_quantity > 0;
 END $$
 DELIMITER ;
+
+select * from product;
+insert into orders(bill, cus_id, hub_id, prod_id) value ('300', 'CS001', 'HB001', 'PD001');
 
 #----- Generate random second from 10 to 30 ----#
 SELECT SEC_TO_TIME(
