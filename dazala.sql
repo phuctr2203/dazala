@@ -13,6 +13,7 @@ CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
 CREATE ROLE customer;
 GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
 GRANT SELECT ON dazala.product TO customer;
+GRANT SELECT ON dazala.orders TO customer;
 GRANT EXECUTE ON PROCEDURE search_product_based_on_name TO customer;
 GRANT EXECUTE ON PROCEDURE search_product_based_on_price TO customer;
 GRANT EXECUTE ON PROCEDURE search_vendor_based_on_distance TO customer;
@@ -22,6 +23,8 @@ GRANT customer TO 'customer'@'localhost';
 CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
 CREATE ROLE shipper;
 GRANT SELECT, INSERT ON dazala.shipper TO shipper;
+GRANT SELECT, UPDATE ON dazala.orders TO shipper;
+GRANT SELECT ON dazala.hub TO shipper;
 GRANT shipper TO 'shipper'@'localhost';
 
 #----- CREATE TABLE -----#
@@ -389,9 +392,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-select * from product;
-insert into orders(bill, cus_id, hub_id, prod_id) value ('300', 'CS001', 'HB001', 'PD001');
-
 #----- Generate random second from 10 to 30 ----#
 SELECT SEC_TO_TIME(
 	FLOOR(
@@ -418,3 +418,6 @@ SELECT random_secs(); #---- test function ---#
 select cal_distance(11,10,12,10);
 
 UPDATE product SET name = 'Ipad', price = '300' WHERE id = 'PD001';
+
+INSERT INTO orders (bill, hub_id, cus_id, prod_id) VALUE (300, 'HB001', 'CS001', 'PD001');
+
