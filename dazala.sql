@@ -13,6 +13,10 @@ CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
 CREATE ROLE customer;
 GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
 GRANT SELECT ON dazala.product TO customer;
+GRANT EXECUTE ON PROCEDURE search_product_based_on_name TO customer;
+GRANT EXECUTE ON PROCEDURE search_product_based_on_price TO customer;
+GRANT EXECUTE ON PROCEDURE search_vendor_based_on_distance TO customer;
+GRANT EXECUTE ON FUNCTION cal_distance TO customer;
 GRANT customer TO 'customer'@'localhost';
 
 CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
@@ -115,8 +119,10 @@ CREATE TABLE orders
 	id VARCHAR(10) NOT NULL PRIMARY KEY DEFAULT '0',
 	orders_status VARCHAR(30) NOT NULL,
 	bill DECIMAL(14, 2),
+    quantity INT NOT NULL,
     cus_id VARCHAR(10) NOT NULL,
-    hub_id VARCHAR(10) NOT NULL
+    hub_id VARCHAR(10) NOT NULL,
+    prod_id VARCHAR(10) NOT NULL
 );
 
 DELIMITER $$
@@ -129,31 +135,6 @@ BEGIN
   DO SLEEP(random_time);
   INSERT INTO orders_seq VALUES (NULL);
   SET NEW.id = CONCAT('OR', LPAD(LAST_INSERT_ID(), 3, '0'));
-END$$
-DELIMITER ;
-
-#----- ORDERS DETAIL -----#
-CREATE TABLE orders_detail_seq 
-(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-);
-
-CREATE TABLE orders_detail
-(
-	id VARCHAR(10) NOT NULL PRIMARY KEY DEFAULT '0',
-	quantity INT NOT NULL,
-	total_price DECIMAL(14, 2),
-    prod_id VARCHAR(10) NOT NULL,
-    orders_id VARCHAR(10) NOT NULL
-);
-
-DELIMITER $$
-CREATE TRIGGER tg_orders_detail_insert
-BEFORE INSERT ON orders_detail
-FOR EACH ROW
-BEGIN
-  INSERT INTO orders_detail_seq VALUES (NULL);
-  SET NEW.id = CONCAT('OD', LPAD(LAST_INSERT_ID(), 3, '0'));
 END$$
 DELIMITER ;
 
@@ -240,13 +221,11 @@ ALTER TABLE orders
 ADD CONSTRAINT FK_orders_cus_id
 FOREIGN KEY (cus_id) REFERENCES customer(id);
 
-ALTER TABLE orders_detail
-ADD CONSTRAINT FK_orders_detail_prod_id
+ALTER TABLE orders
+ADD CONSTRAINT FK_orders_prod_id
 FOREIGN KEY (prod_id) REFERENCES product(id);
 
-ALTER TABLE orders_detail
-ADD CONSTRAINT FK_orders_detail_prders_id
-FOREIGN KEY (orders_id) REFERENCES orders(id);
+ALTER TABLE orders ALTER quantity SET DEFAULT 1;
 
 ALTER TABLE hub 
 ADD CONSTRAINT DH_Lad_Long UNIQUE (latitude, longtitude);
@@ -272,9 +251,9 @@ select * from hub;
 
 #----- INSERT COMMAND -----#
 insert into vendor(name, address, latitude, longtitude, username, password) values 
-('Phuc', 'Ho Chi Minh City', 12, 10, 'phuc123', '123'),
-('Dung', 'Hanoi', 15, 101, 'dung123', 'abc'),
-('Tri Dang', 'New York', -80, -10, 'tri123', 'ilovecs');
+('Phuc', 'Hai Phong', 20.86, 106.70, 'phuc123', '123'),
+('Dung', 'Hanoi', 21.02, 105.85, 'dung123', 'abc'),
+('Tri Dang', 'Da Nang', 16.05, 108.22, 'tri123', 'ilovecs');
 
 insert into product (name, price, quantity, ven_id) values 
 ('Iphone X', 300, 5, 'VD001'),
@@ -306,14 +285,14 @@ insert into product (name, price, quantity, ven_id) values
 
 
 insert into customer(name, address, latitude, longtitude, username, password) values
-('Binh', 'Thanh Hoa', 65, 121, 'binh123', '12345'),
-('Linh', 'Cu Ba', 50, -100, 'linh123', 'abc123'),
-('Hung', 'Thailand', -35, 0, 'hung123', 'hung123');
+('Binh', 'Thanh Hoa', 19.80, 105.80, 'binh123', '12345'),
+('Linh', 'Nha Trang', 12.25, 109.20, 'linh123', 'abc123'),
+('Hung', 'Buon Ma Thuot', 12.67, 108.04, 'hung123', 'hung123');
 
 insert into hub(name, address, latitude, longtitude) values
-('Grab', 'Nha Trang', 10, 50),
-('Uber', 'My Tho', -10, -20),
-('GHTK', 'Ha Noi', 20, -30);
+('Grab', 'Nam Dinh', 20.43, 106.17),
+('Uber', 'Do Son', 20.67, 106.80),
+('GHTK', 'Nghe An', 18.68, 105.67);
 
 insert into shipper(name, username, password, hub_id) values
 ('Long', 'long123', 'nguvcl', 'HB001'),
@@ -335,7 +314,7 @@ BEGIN
     SELECT(111.111 *
     DEGREES(ACOS(LEAST(1.0, COS(RADIANS(lat_1))
 	* COS(RADIANS(lat_2))
-	* COS(RADIANS(lon_1 - lon_2))
+	* COS(RADIANS(lon_1 - lon_2)) 
 	+ SIN(RADIANS(lat_1))
 	* SIN(RADIANS(lat_2)))))) INTO distance;
     RETURN distance;
@@ -366,13 +345,16 @@ CALL search_product_based_on_price(10, 200);
 DELIMITER $$
 CREATE PROCEDURE search_vendor_based_on_distance(IN input_distance decimal(10,4), IN user_lat decimal(10,4), IN user_lon decimal(10,4))
 BEGIN
-	SELECT * FROM vendor v
+	SELECT *, cal_distance(user_lat, user_lon, v.latitude, v.longtitude) as distance FROM vendor v
 	WHERE ((select cal_distance(user_lat, user_lon, v.latitude, v.longtitude)) <= input_distance);
 END $$
 DELIMITER ;
 
-CALL search_vendor_based_on_distance(111.2, 11, 10);
+CALL search_vendor_based_on_distance(500, 19.8, 105.8);
 
+select * from customer;
+drop procedure search_vendor_based_on_distance;
+select * from vendor;
 SELECT (111.111 *
     DEGREES(ACOS(LEAST(1.0, COS(RADIANS(11))
 	* COS(RADIANS(12))
@@ -390,35 +372,6 @@ END $$
 DELIMITER ;
 
 CALL show_product_of_particular_vendor('phuc');
-
-#----- trigger alert if order's quantity > stock's quantity ------#
-DELIMITER $$
-CREATE TRIGGER tg_add_products_on_orders_detail
-BEFORE INSERT ON orders_detail
-FOR EACH ROW
-BEGIN
-	DECLARE quantity_in_stock int;
-    DECLARE quantity_orders int;
-    SELECT quantity into quantity_in_stock from product where id = new.prod_id;
-    SELECT new.quantity into quantity_orders;
-    IF( quantity_in_stock < quantity_orders) THEN
-    SIGNAL SQLSTATE '45000' SET message_text = 'Cannot purchase this orders since it reaches out of quantity in stocks';
-    END IF;
-END $$
-DELIMITER ;
-
-#---- trigger to update price in orders----#
-DELIMITER $$
-CREATE TRIGGER tg_update_bill
-AFTER INSERT ON orders_detail
-FOR EACH ROW
-BEGIN
-	UPDATE orders
-    SET bill = (select sum(total_price) from orders_detail where orders_id = NEW.orders_id group by orders_id)
-    WHERE id = NEW.orders_id;
-END $$
-DELIMITER ;
-
 
 #----- trigger to add product -----#
 DELIMITER $$
@@ -455,3 +408,5 @@ DELIMITER ;
 SELECT random_secs(); #---- test function ---#
 
 select cal_distance(11,10,12,10);
+
+UPDATE product SET name = 'Ipad', price = '300' WHERE id = 'PD001';
