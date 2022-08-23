@@ -13,11 +13,12 @@ CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
 CREATE ROLE customer;
 GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
 GRANT SELECT ON dazala.product TO customer;
-GRANT SELECT ON dazala.orders TO customer;
+GRANT SELECT, INSERT ON dazala.orders TO customer;
 GRANT EXECUTE ON PROCEDURE search_product_based_on_name TO customer;
 GRANT EXECUTE ON PROCEDURE search_product_based_on_price TO customer;
 GRANT EXECUTE ON PROCEDURE search_vendor_based_on_distance TO customer;
 GRANT EXECUTE ON FUNCTION cal_distance TO customer;
+GRANT EXECUTE ON PROCEDURE cal_nearest_distance TO customer;
 GRANT customer TO 'customer'@'localhost';
 
 CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
@@ -328,8 +329,7 @@ DELIMITER ;
 
 #--- FUNCTION RETURNS HUB ID NEAREST TO THE VENDOR ---#
 DELIMITER $$
-CREATE FUNCTION cal_nearest_distance(purchased_prod_id varchar(10))
-RETURNS varchar(10) deterministic
+CREATE PROCEDURE cal_nearest_distance(purchased_prod_id varchar(10))
 BEGIN
 	DECLARE nearest_hub_id VARCHAR(10);
     DECLARE lat_prod_vendor DECIMAL(10,4);
@@ -337,9 +337,11 @@ BEGIN
 	SELECT latitude INTO lat_prod_vendor FROM vendor WHERE id = (SELECT ven_id FROM product WHERE id = purchased_prod_id);
     SELECT longtitude INTO lon_prod_vendor FROM vendor WHERE id = (SELECT ven_id FROM product WHERE id = purchased_prod_id);
     SELECT id INTO nearest_hub_id FROM hub WHERE cal_distance(lat_prod_vendor,lon_prod_vendor, latitude, longtitude) IN (SELECT MIN(cal_distance(lat_prod_vendor,lon_prod_vendor, latitude, longtitude)) FROM HUB);
-    return nearest_hub_id;
+    SELECT * FROM hub WHERE id = nearest_hub_id;
 END $$
 DELIMITER ;
+
+call cal_nearest_distance('PD001');
 
 #----- SEARCH PRODCUT BASED ON NAME AND PRICE -----#
 DELIMITER $$
@@ -428,11 +430,4 @@ BEGIN
 END $$
 DELIMITER ;
 
-SELECT random_secs(); #---- test function ---#
-
-select cal_distance(11,10,12,10);
-
-UPDATE product SET name = 'Ipad', price = '300' WHERE id = 'PD001';
-
-INSERT INTO orders (bill, hub_id, cus_id, prod_id) VALUE (300, 'HB001', 'CS001', 'PD001');
 
