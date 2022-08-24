@@ -28,6 +28,8 @@ CREATE ROLE shipper;
 GRANT SELECT, INSERT ON dazala.shipper TO shipper;
 GRANT SELECT, UPDATE ON dazala.orders TO shipper;
 GRANT SELECT ON dazala.hub TO shipper;
+GRANT EXECUTE ON PROCEDURE shipped_orders TO shipper;
+GRANT EXECUTE ON PROCEDURE cancel_orders TO shipper;
 GRANT shipper TO 'shipper'@'localhost';
 
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -140,11 +142,13 @@ FOR EACH ROW
 BEGIN
   DECLARE random_time TIME;
   SELECT random_secs() into random_time;
-  DO SLEEP(random_time);
+  #DO SLEEP(random_time);
   INSERT INTO orders_seq VALUES (NULL);
   SET NEW.id = CONCAT('OR', LPAD(LAST_INSERT_ID(), 3, '0'));
 END$$
 DELIMITER ;
+
+drop trigger tg_orders_insert;
 
 #----- DISTRIBUTION HUB -----#
 
@@ -310,10 +314,6 @@ insert into shipper(name, username, password, hub_id) values
 ('Ship', 'ship123', 'vailon', 'HB003');
 
 #----- DETELE COMMAND -----#
-delete from customer where id = 'CS003';
-
-#----- DISPLAY PRODUCT (NEW TO OLD), LIMIT 2 PER PAGE COMMAND -----#
-select * from product order by id desc limit 2;
 
 #----- Function calculate distance based on Lat and Lon ------#
 DELIMITER $$
@@ -345,8 +345,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-call cal_nearest_distance('PD001');
-
 #----- SEARCH PRODCUT BASED ON NAME AND PRICE -----#
 DELIMITER $$
 CREATE PROCEDURE search_product_based_on_name(IN input_product_name varchar(30))
@@ -356,16 +354,12 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL search_product_based_on_name('iph');
-
 DELIMITER $$
 CREATE PROCEDURE search_product_based_on_price(IN input_product_price_start decimal(14,2), IN input_product_price_end decimal(14,2))
 BEGIN
     SELECT * FROM PRODUCT WHERE PRICE BETWEEN input_product_price_start AND input_product_price_end;
 END $$
 DELIMITER ;
-
-CALL search_product_based_on_price(10, 200);
 
 #------- Search vendor based on distance ------#
 DELIMITER $$
@@ -376,11 +370,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL search_vendor_based_on_distance(500, 19.8, 105.8);
-
-select * from customer;
-drop procedure search_vendor_based_on_distance;
-select * from vendor;
 SELECT (111.111 *
     DEGREES(ACOS(LEAST(1.0, COS(RADIANS(11))
 	* COS(RADIANS(12))
@@ -451,5 +440,21 @@ BEGIN
 	START TRANSACTION;
     INSERT INTO orders (bill, hub_id, cus_id, prod_id) VALUE (new_bill, new_hub_id, new_cus_id, new_prod_id);
     COMMIT;
+END $$
+DELIMITER ;
+
+#----- Procedure finish order -----#
+DELIMITER $$
+CREATE PROCEDURE shipped_orders(IN orders_id VARCHAR(10))
+BEGIN
+	UPDATE orders SET orders_status = 'Shipped' WHERE id = orders_id;
+END $$
+DELIMITER ;
+
+#----- Procedure cancel order -----#
+DELIMITER $$
+CREATE PROCEDURE cancel_orders(IN orders_id VARCHAR(10))
+BEGIN
+	UPDATE orders SET orders_status = 'Cancelled' WHERE id = orders_id;
 END $$
 DELIMITER ;
