@@ -408,9 +408,11 @@ FOR EACH ROW
 BEGIN
 	DECLARE prod_quantity int;
     SELECT quantity into prod_quantity from product where id = NEW.prod_id;
+    IF(NEW.orders_status = 'Cancelled') THEN
     UPDATE product 
     SET quantity = prod_quantity + 1 
     WHERE id = NEW.prod_id AND prod_quantity > 0;
+    END IF;
 END $$
 DELIMITER ;
 
