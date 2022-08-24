@@ -30,7 +30,7 @@ GRANT SELECT, UPDATE ON dazala.orders TO shipper;
 GRANT SELECT ON dazala.hub TO shipper;
 GRANT shipper TO 'shipper'@'localhost';
 
-SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 #----- CREATE TABLE -----#
 #----- VENDOR -----#
