@@ -6,19 +6,21 @@ USE dazala;
 CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
 CREATE ROLE vendor;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dazala.product TO vendor;
-GRANT SELECT, INSERT ON dazala.vendor TO vendor;
+GRANT SELECT, INSERT, UPDATE ON dazala.vendor TO vendor;
+GRANT EXECUTE ON PROCEDURE ven_edit_product TO vendor;
 GRANT vendor TO 'vendor'@'localhost';
 
 CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
 CREATE ROLE customer;
-GRANT SELECT, INSERT, DELETE ON dazala.customer TO customer;
-GRANT SELECT ON dazala.product TO customer;
+GRANT SELECT, INSERT, DELETE, UPDATE ON dazala.customer TO customer;
+GRANT SELECT, UPDATE ON dazala.product TO customer;
 GRANT SELECT, INSERT ON dazala.orders TO customer;
 GRANT EXECUTE ON PROCEDURE search_product_based_on_name TO customer;
 GRANT EXECUTE ON PROCEDURE search_product_based_on_price TO customer;
 GRANT EXECUTE ON PROCEDURE search_vendor_based_on_distance TO customer;
 GRANT EXECUTE ON FUNCTION cal_distance TO customer;
 GRANT EXECUTE ON PROCEDURE cal_nearest_distance TO customer;
+GRANT EXECUTE ON PROCEDURE cus_buy_product TO customer;
 GRANT customer TO 'customer'@'localhost';
 
 CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
@@ -27,6 +29,8 @@ GRANT SELECT, INSERT ON dazala.shipper TO shipper;
 GRANT SELECT, UPDATE ON dazala.orders TO shipper;
 GRANT SELECT ON dazala.hub TO shipper;
 GRANT shipper TO 'shipper'@'localhost';
+
+SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 #----- CREATE TABLE -----#
 #----- VENDOR -----#
@@ -343,27 +347,6 @@ DELIMITER ;
 
 call cal_nearest_distance('PD001');
 
-#----- Generate random second from 10 to 30 ----#
-SELECT SEC_TO_TIME(
-	FLOOR(
-	TIME_TO_SEC('00:00:10') + RAND() * (
-	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
-    
-#------ Funtion returns random 10 - 30 seconds -----#
-SET GLOBAL log_bin_trust_function_creators = 1;
-DELIMITER $$
-CREATE FUNCTION random_secs()
-RETURNS TIME
-BEGIN
-	DECLARE rand_secs TIME;
-    SELECT SEC_TO_TIME(
-	FLOOR(
-	TIME_TO_SEC('00:00:10') + RAND() * (
-	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))) INTO rand_secs;
-    RETURN rand_secs;
-END $$
-DELIMITER ;
-
 #----- SEARCH PRODCUT BASED ON NAME AND PRICE -----#
 DELIMITER $$
 CREATE PROCEDURE search_product_based_on_name(IN input_product_name varchar(30))
@@ -430,25 +413,43 @@ BEGIN
 END $$
 DELIMITER ;
 
-#---- trigger to update quantity after the order was cancelled ---#
+#----- Generate random second from 10 to 30 ----#
+SELECT SEC_TO_TIME(
+	FLOOR(
+	TIME_TO_SEC('00:00:10') + RAND() * (
+	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
+    
+#------ Funtion returns random 10 - 30 seconds -----#
+SET GLOBAL log_bin_trust_function_creators = 1;
 DELIMITER $$
-CREATE TRIGGER tg_update_quantity_if_orders_cancelled
-AFTER UPDATE ON orders
-FOR EACH ROW
+CREATE FUNCTION random_secs()
+RETURNS TIME
 BEGIN
-	DECLARE prod_quantity int;
-	IF NEW.orders_status = 'Cancel' THEN
-    SELECT quantity into prod_quantity from product where id = NEW.prod_id;
-    UPDATE product 
-    SET quantity = prod_quantity + 1 
-    WHERE id = NEW.prod_id AND prod_quantity > 0;
-    END IF;
+	DECLARE rand_secs TIME;
+    SELECT SEC_TO_TIME(
+	FLOOR(
+	TIME_TO_SEC('00:00:10') + RAND() * (
+	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00'))))) INTO rand_secs;
+    RETURN rand_secs;
 END $$
 DELIMITER ;
 
-UPDATE orders
-SET orders_status = 'Cancel' where id = 'OR001'; 
+#----- Store procedure for edit product -----#
+DELIMITER $$
+CREATE PROCEDURE ven_edit_product(IN new_price DECIMAL(14,2), IN new_quantity INT, IN prod_id VARCHAR(10))
+BEGIN
+	START TRANSACTION;
+    UPDATE product SET price = new_price, quantity = new_quantity WHERE id = prod_id;
+    COMMIT;
+END $$
+DELIMITER ;
 
-#--- ---#
-
-
+#----- Store procedure for buy product -----#
+DELIMITER $$
+CREATE PROCEDURE cus_buy_product(IN new_bill DECIMAL(14,2), IN new_hub_id VARCHAR(10), IN new_cus_id VARCHAR(10), IN new_prod_id VARCHAR(10))
+BEGIN
+	START TRANSACTION;
+    INSERT INTO orders (bill, hub_id, cus_id, prod_id) VALUE (new_bill, new_hub_id, new_cus_id, new_prod_id);
+    COMMIT;
+END $$
+DELIMITER ;
