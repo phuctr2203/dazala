@@ -1224,7 +1224,7 @@ a:focus {
 }
 .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
   position: absolute;
-  right: 0;
+  right: auto;
   left: auto;
 }
 @media (max-width: 991px) {

@@ -37,17 +37,17 @@ if (isset($_POST['act'])) {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/png" href="" />
+    <link rel="icon" type="image/png" href="../assets/images/icon-title.png" />
     <title>Dazala E-Commerce</title>   
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />    
-    <link href="../../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />    
-    <link href="../../assets/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />    
-    <link href="../../assets/ionicons-2.0.1/css/ionicons.css" rel="stylesheet" type="text/css" />        
-    <link href="../../assets/css/plugins/bootstrap-dialog.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/css/plugins/bootstrapValidator.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/iCheck/square/blue.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />    
+    <link href="../assets/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />    
+    <link href="../assets/ionicons-2.0.1/css/ionicons.css" rel="stylesheet" type="text/css" />        
+    <link href="../assets/css/plugins/bootstrap-dialog.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/plugins/bootstrapValidator.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/iCheck/square/blue.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="hold-transition login-page">
@@ -59,7 +59,7 @@ if (isset($_POST['act'])) {
             <div class="login-box-body">
                 <div class="alert alert-danger" style="display: none;"></div>
                 <div class="form-group has-feedback">
-                    <input name="name" type="text" class="form-control" placeholder="Name" required>                    
+                    <input name="name" type="text" class="form-control" placeholder="Product's Name" autofocus required>                    
                 </div>
                 <div class="form-group has-feedback">
                     <input name="price" type="decimal" class="form-control" placeholder="Price" required>                    
@@ -69,7 +69,7 @@ if (isset($_POST['act'])) {
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
-                        <button type="submit" name="act" value="INSERT" class="btn btn-primary btn-block btn-flat" style="background-color: maroon;">Add Product</button>
+                        <button type="submit" name="act" value="INSERT" class="btn btn-primary btn-block btn-flat" style="background-color: Green;">Add Product</button>
                     </div>
                     <div class="col-xs-6">
                         <button onclick='window.location.href="vendor_product.php";' class="btn btn-primary btn-block btn-flat" style="background-color: blue;">Back To Main Page</button>  

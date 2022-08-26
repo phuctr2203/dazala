@@ -2,6 +2,11 @@
     require_once '../login_page/db.php';
 
     session_start();
+
+    $ven_id = $_SESSION['ven_id'];
+    $sql = "SELECT * FROM vendor WHERE id = '$ven_id'";
+    $stmt = $vendor->query($sql);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -13,9 +18,7 @@
         <link rel="icon" type="image/png" href="../assets/images/icon-title.png" />
         <title>Dazala E-Commerce</title>   
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />    
-        <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />    
-        <link href="../assets/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />    
-        <link href="../assets/ionicons-2.0.1/css/ionicons.css" rel="stylesheet" type="text/css" />        
+        <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />        
         <link href="../assets/css/plugins/bootstrap-dialog.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/plugins/bootstrapValidator.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/AdminLTE.css" rel="stylesheet" type="text/css" />
@@ -26,7 +29,6 @@
 
     <body class="skin-green-light sidebar-mini" data-new-gr-c-s-check-loaded="14.1013.0">
         <div class="wrapper">
-
             <header class="main-header">
                 <a class="logo">
                     <img style="width:100px!important;" class="main-logo" src="../assets/images/logo.png">
@@ -37,16 +39,15 @@
                             <li class="dropdown user-menu">
                                 <a href="javascript:;" class="dropdown-toggle" style="height: 55px;" data-toggle="dropdown">     
                                     <?php
-                                        $ven_id = $_SESSION['ven_id'];
-                                        $sql = "SELECT * FROM vendor WHERE id = '$ven_id'";
-                                        $stmt = $vendor->query($sql);
-                                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
                                         echo "<span class='hidden-xs'>Welcome " . $row['name']. "</span>";
                                     ?>
+                                    <br>
+                                    <div style="text-align: center">
+                                        <i class="fa-solid fa-caret-down"></i>
+                                    </div>
                                 </a>
-                                <ul class="dropdown-menu" style="width: 55px; height: 30px">
-                                    <li><a href="logout.php">Log Out</a></li>
+                                <ul class="dropdown-menu" style="width: 55px; height: 25px; right: auto">
+                                    <li><a href="logout.php" style="background-color: Maroon; color: white">Log Out<i class="fa-solid fa-right-from-bracket" style="padding-left: 10px"></i></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -57,7 +58,7 @@
             <aside class="main-sidebar">    
                 <section class="sidebar" style="height: auto;">        
                     <ul class="sidebar-menu">
-                        <h3>Your Information</h3>
+                        <h3 style="text-align: center"><i class="fa-solid fa-user"></i>Your Information</h3>
                         <li class="treeview active">
                             <ul class="treeview-menu menu-open" style="display: block;">
                                 <?php
@@ -72,10 +73,10 @@
                             </ul>
                         </li>
                         <br>
-                        <button onclick='window.location.href="update_ven_info.php";' class="form-control btn btn-primary">Update Information</button>
+                        <button onclick='window.location.href="update_ven_info.php";' class="form-control btn btn-primary" style="background-color: Green">Update Information</button>
                     </ul>
                     <br>
-                    <button onclick='window.location.href="add_product.php";' class="form-control btn btn-primary">Add Product</button> 
+                    <button onclick='window.location.href="add_product.php";' class="form-control btn btn-primary" style="background-color: #5941A9">Add Product</button> 
                 </section>
             </aside>
 
@@ -138,5 +139,6 @@
         <script src="../assets/js/plugins/album.js.download" type="text/javascript"></script>
         <script src="../assets/iCheck/icheck.js" type="text/javascript"></script>
         <script src="../assets/js/exec/auth.js" type="text/javascript"></script>
+        <script src="https://kit.fontawesome.com/443903aef7.js" crossorigin="anonymous"></script>
     </body>
 </html>

@@ -120,10 +120,10 @@ if (isset($_POST['act'])) {
                 <br>
                 <div class="row">
                     <div class="col-xs-6">
-                        <button type="submit" name="act" value="Login" class="btn btn-primary btn-block btn-flat" style="background-color: maroon;">Login</button>
+                        <button type="submit" name="act" value="Login" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Login</button>
                     </div>
                     <div class="col-xs-6">
-                        <button onclick='window.location.href="../login_page/register/pre_register.php";' class="btn btn-primary btn-block btn-flat" style="background-color: blue;">Register</button>  
+                        <button onclick='window.location.href="../login_page/register/pre_register.php";' class="btn btn-primary btn-block btn-flat" style="background-color: light blue;">Register</button>  
                     </div>
                 </div>
             </div>
