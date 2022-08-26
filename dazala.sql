@@ -329,16 +329,16 @@ BEGIN
 END $$
 DELIMITER ;
 
-#--- FUNCTION RETURNS HUB ID NEAREST TO THE VENDOR ---#
+#--- FUNCTION RETURNS HUB ID NEAREST TO THE CUSTOMER ---#
 DELIMITER $$
-CREATE PROCEDURE cal_nearest_distance(purchased_prod_id varchar(10))
+CREATE PROCEDURE cal_nearest_distance(IN purchased_prod_id varchar(10), IN buyer_id varchar(10))
 BEGIN
 	DECLARE nearest_hub_id VARCHAR(10);
-    DECLARE lat_prod_vendor DECIMAL(10,4);
-	DECLARE lon_prod_vendor DECIMAL(10,4);
-	SELECT latitude INTO lat_prod_vendor FROM vendor WHERE id = (SELECT ven_id FROM product WHERE id = purchased_prod_id);
-    SELECT longtitude INTO lon_prod_vendor FROM vendor WHERE id = (SELECT ven_id FROM product WHERE id = purchased_prod_id);
-    SELECT id INTO nearest_hub_id FROM hub WHERE cal_distance(lat_prod_vendor,lon_prod_vendor, latitude, longtitude) IN (SELECT MIN(cal_distance(lat_prod_vendor,lon_prod_vendor, latitude, longtitude)) FROM HUB);
+    DECLARE lat_prod_customer DECIMAL(10,4);
+	DECLARE lon_prod_customer DECIMAL(10,4);
+	SELECT latitude INTO lat_prod_customer FROM customer WHERE id = buyer_id;
+    SELECT longtitude INTO lon_prod_customer FROM customer WHERE id = buyer_id;
+    SELECT id INTO nearest_hub_id FROM hub WHERE cal_distance(lat_prod_customer,lon_prod_customerr, latitude, longtitude) IN (SELECT MIN(cal_distance(lat_prod_customer,lon_prod_customer, latitude, longtitude)) FROM HUB);
     SELECT * FROM hub WHERE id = nearest_hub_id;
 END $$
 DELIMITER ;
