@@ -1,3 +1,10 @@
+<?ph
+require_once '../login_page/db.php';
+
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -31,10 +38,6 @@
                             <li class="dropdown user-menu">
                                 <a href="javascript:;" class="dropdown-toggle" style="height: 55px;" data-toggle="dropdown">     
                                     <?php
-                                        require_once '../login_page/db.php';
-
-                                        session_start();
-
                                         $ven_id = $_SESSION['ven_id'];
                                         $sql = "SELECT * FROM vendor WHERE id = '$ven_id'";
                                         $stmt = $vendor->query($sql);
