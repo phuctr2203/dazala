@@ -1,3 +1,9 @@
+<?php
+    require_once '../login_page/db.php';
+
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -31,10 +37,6 @@
                             <li class="dropdown user-menu">
                                 <a href="javascript:;" class="dropdown-toggle" style="height: 55px;" data-toggle="dropdown">     
                                     <?php
-                                        require_once '../login_page/db.php';
-
-                                        session_start();
-
                                         $ven_id = $_SESSION['ven_id'];
                                         $sql = "SELECT * FROM vendor WHERE id = '$ven_id'";
                                         $stmt = $vendor->query($sql);
@@ -87,27 +89,35 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box">
-                                <?php
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <!-- chỗ này để display hàng hóa các thứ các thứ, để trong clas này nhé (IMPORTANT) -->
+                                        <?php
 
-                                    $sql_show_product_vendor = "SELECT * FROM product 
-                                    WHERE ven_id = (SELECT id FROM vendor WHERE id = '$ven_id')";
+                                            $sql_show_product_vendor = "SELECT * FROM product 
+                                            WHERE ven_id = (SELECT id FROM vendor WHERE id = '$ven_id')";
 
-                                    $stmt_show_product_vendor = $vendor->query($sql_show_product_vendor);
+                                            $stmt_show_product_vendor = $vendor->query($sql_show_product_vendor);
 
-                                    foreach($stmt_show_product_vendor as $row) {
-                                        $id = $row['id'];
-                                        $name = $row['name'];
-                                        $price = $row['price'];
-                                        $quantity = $row['quantity'];
-                                        $ven_id = $row['ven_id'];
+                                            foreach($stmt_show_product_vendor as $row) {
+                                            $id = $row['id'];
+                                            $name = $row['name'];
+                                            $price = $row['price'];
+                                            $quantity = $row['quantity'];
+                                            $ven_id = $row['ven_id'];
 
-                                        echo "<br>ID: " . $id. "<br>name: " . $name. "<br>price: $" . $price. "<br>quantity: " . $quantity. "<br>vendor id: " . $ven_id."";
-                                        echo "<br>";
+                                            echo "<br>ID: " . $id. "<br>name: " . $name. "<br>price: $" . $price. "<br>quantity: " . $quantity. "<br>vendor id: " . $ven_id."";
+                                            echo "<br>";
 
-                                        echo "<a href='edit_product.php?prod_id=$id' >Edit Product</a><br>";
-                                    }
+                                            echo "<a href='edit_product.php?prod_id=$id' >Edit Product</a><br>";
+                                            }
 
-                                ?>
+                                        ?>   
+                                    </div>
+                                    <div class="paginate">
+                                        <!-- thêm paginatation vào đây nhé -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
