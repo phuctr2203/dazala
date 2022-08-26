@@ -79,7 +79,7 @@ if (isset($_POST['act'])) {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/png" href="" />
+    <link rel="icon" type="image/png" href="../assets/images/icon-title.png" />
     <title>Dazala E-Commerce</title>   
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />    
     <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />    
@@ -93,7 +93,7 @@ if (isset($_POST['act'])) {
 </head>
 
 <body class="hold-transition login-page">
-    <form id="baseform" method="post"  role="form">
+    <form id="baseform" method="post" role="form">
         <div class="login-box">
             <div class="login-logo">
                 Sign In To Dazala
@@ -106,9 +106,18 @@ if (isset($_POST['act'])) {
                 <div class="form-group has-feedback">
                     <input name="password" type="password" class="form-control" placeholder="Password" required>                    
                 </div>
-                <input type="checkbox" name="role" value="vendor">Vendor</input>
-                <input type="checkbox" name="role" value="customer">Customer</input>
-                <input type="checkbox" name="role" value="shipper">Shipper</input>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <input type="radio" name="role" value="vendor" autofocus required>Vendor</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="role" value="customer" required>Customer</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="role" value="shipper" required>Shipper</input>
+                    </div>
+                </div>
+                <br>
                 <div class="row">
                     <div class="col-xs-6">
                         <button type="submit" name="act" value="Login" class="btn btn-primary btn-block btn-flat" style="background-color: maroon;">Login</button>

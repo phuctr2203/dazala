@@ -38,7 +38,7 @@ if (isset($_POST['act'])) {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/png" href="" />
+    <link rel="icon" type="image/png" href="../../assets/images/icon-title.png" />
     <title>Dazala E-Commerce</title>   
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />    
     <link href="../../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />    
@@ -63,14 +63,23 @@ if (isset($_POST['act'])) {
                     <input name="name" type="text" class="form-control" placeholder="Name" required>                    
                 </div>
                 <div class="form-group has-feedback">
-                    <input name="username" type="text" class="form-control" placeholder="Username" autofocus required>                    
+                    <input name="username" type="text" class="form-control" placeholder="Username" required>                    
                 </div>
                 <div class="form-group has-feedback">
                     <input name="password" type="text" class="form-control" placeholder="Password" required>                    
                 </div>
-                <input type="checkbox" name="hub_id" value="HB001">Grab</input>
-                <input type="checkbox" name="hub_id" value="HB002">Uber</input>
-                <input type="checkbox" name="hub_id" value="HB003">GHTK</input>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <input type="radio" name="hub_id" value="HB001" required>Grab</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="hub_id" value="HB002" required>Uber</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="hub_id" value="HB003" required>GHTK</input>
+                    </div>
+                </div>
+                <br>
                 <div class="row">
                     <div class="col-xs-6">
                         <button type="submit" name="act" value="INSERT" class="btn btn-primary btn-block btn-flat" style="background-color: maroon;">Register</button>
