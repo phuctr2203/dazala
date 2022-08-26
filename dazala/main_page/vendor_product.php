@@ -1,4 +1,4 @@
-<?ph
+<?php
 require_once '../login_page/db.php';
 
 session_start();
