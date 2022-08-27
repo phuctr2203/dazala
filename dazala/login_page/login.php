@@ -98,6 +98,9 @@ if (isset($_POST['act'])) {
             <div class="login-logo">
                 Sign In To Dazala
             </div>
+            <div class="login-logo">
+                Sign In To Dazala
+            </div>
             <div class="login-box-body">
                 <div class="alert alert-danger" style="display: none;"></div>
                 <div class="form-group has-feedback">
