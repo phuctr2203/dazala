@@ -16,7 +16,10 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <link rel="icon" type="image/png" href="../assets/images/icon-title.png" />
-        <title>Dazala E-Commerce</title>   
+        <title>Dazala E-Commerce</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajex/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />    
         <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />        
         <link href="../assets/css/plugins/bootstrap-dialog.css" rel="stylesheet" type="text/css" />
@@ -101,39 +104,56 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box">
-                                <div class="box-body">
-                                    <div class="table-responsive">
-                                        <!-- chỗ này để display hàng hóa các thứ các thứ, để trong clas này nhé (IMPORTANT) -->
-                                        <?php
 
-                                            $sql = "SELECT * FROM product ORDER BY id DESC"; 
-                                            $rows = $customer->query($sql);
-                                            
-                                            foreach($rows as $row) {
-                                                $id = $row['id'];
-                                                $name = $row['name'];
-                                                $price = $row['price'];
-                                                $quantity = $row['quantity'];
-                                                $ven_id = $row['ven_id'];
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Vendor ID</th>
+                            <th scope="col">Operations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                                                echo "<br>ID: " . $id. "<br>name: " . $name. "<br>price: $" . $price. "<br>quantity: " . $quantity. "<br>vendor id: " . $ven_id."";
-                                                echo "<br>";
+                        <?php
 
-                                                echo "<a href='orders.php?prod_id=$id' >Buy Product</a><br>";            
-                                            }
+                        require_once '../login_page/db.php';
 
-                                        ?>   
-                                    </div>
-                                    <div class="paginate">
-                                        <!-- thêm paginatation vào đây nhé -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        // Displaying product from database
+
+                        $sql = "SELECT * FROM product ORDER BY id DESC";
+                        $result=mysqli_query($link1, $sql);
+                        if($result) {
+                            while($row=mysqli_fetch_assoc($result)) {
+                                $id=$row['id'];
+                                $name=$row['name'];
+                                $price=$row['price'];
+                                $quantity=$row['quantity'];
+                                $venid=$row['ven_id'];
+                                echo '<tr>
+                                <th scope="row">'.$id.'</th>
+                                <td>'.$name.'</td>
+                                <td>'.$price.'</td>
+                                <td>'.$quantity.'</td>
+                                <td>'.$venid.'</td>
+                                <td>
+                                <button class="btn btn-primary"><a href="" class="text-light">View</a></button>
+                                <button class="btn btn-success"><a href="" class="text-light">Buy</a></button>
+                                </td>
+                                </tr>';
+                            }
+                        }
+
+                        ?>
+
+
+                        </tbody>
+                    </table>
+
+ 
                 </section>
             </div>
         </div>
