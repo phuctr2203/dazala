@@ -1,0 +1,12 @@
+db.dazala.insertMany([
+{ _id: "PD001", category: "Electrical Device", OS: "IOS", resolution: "FullHD", color: ["Black", "White"]},
+{ _id: "PD002", category: "Electrical Device", OS: "IOS", resolution: "2K", color: ["Black", "Red"]},
+{ _id: "PD003", category: "Electrical Device", OS: "Android", resolution: "FullHD", color: ["Black", "Pink"]},
+{ _id: "PD004", category: "Electrical Device", OS: "Android", resolution: "2K", color: ["Blue", "Red"]},
+{ _id: "PD005", category: "Electrical Device", OS: "Android", resolution: "HD", color: ["Blue", "White"]},
+{ _id: "PD006", category: "Electrical Device", OS: "MacOS", resolution: "4K", color: ["Grey", "White"]},
+{ _id: "PD007", category: "Electrical Device", OS: "MacOS", resolution: "4K", color: ["Space Grey", "Gold"]},
+{ _id: "PD008", category: "Electrical Device", OS: "Window", resolution: "FullHD", color: ["Black", "White"]},
+{ _id: "PD009", category: "Electrical Device", OS: "Window", resolution: "FullHD", color: ["Black", "Red"]} ])
+
+
