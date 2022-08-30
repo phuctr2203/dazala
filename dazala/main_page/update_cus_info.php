@@ -102,10 +102,10 @@ if (isset($_POST['act'])) {
                     </div>
                     <div class="row">
                         <div class="col-xs-6">
-                            <button type="submit" name="act" value="UPDATE" class="btn btn-primary btn-block btn-flat" style="background-color: green;">Edit Information</button>
+                            <button type="submit" name="act" value="UPDATE" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Edit Information</button>
                         </div>
                         <div class="col-xs-6">
-                            <button onclick='window.location.href="homepage.php";' class="btn btn-primary btn-block btn-flat" style="background-color: blue;">Back To Main Page</button> 
+                            <button onclick='window.location.href="homepage.php";' class="btn btn-primary btn-block btn-flat" style="background-color: #3c8dbc;">Back To Main Page</button> 
                         </div>
                     </div>
                 </div>

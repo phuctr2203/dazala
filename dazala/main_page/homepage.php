@@ -16,10 +16,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <link rel="icon" type="image/png" href="../assets/images/icon-title.png" />
-        <title>Dazala E-Commerce</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajex/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+        <title>Dazala E-Commerce</title>   
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />    
         <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />        
         <link href="../assets/css/plugins/bootstrap-dialog.css" rel="stylesheet" type="text/css" />
@@ -69,7 +66,7 @@
                                         "<span class='hidden-xs'>Name: " . $row['name']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Address: " . $row['address']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Latitude: " . $row['latitude']. "</span>". "<br>".
-                                        "<span class='hidden-xs'>Longtitude: " . $row['longtitude']. "</span>". "<br>".
+                                        "<span class='hidden-xs'>Longitude: " . $row['longtitude']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Username: " . $row['username']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Password: " . $row['password']. "</span>". "<br>";
                                 ?>
@@ -104,56 +101,79 @@
                         </div>
                     </div>
                     <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col" class="text-center">Quantity</th>
+                                                    <th scope="col" class="text-center">Vendor ID</th>
+                                                    <th scope="col" class="text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                    // Displaying product from database
 
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Vendor ID</th>
-                            <th scope="col">Operations</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                                    $sql = "SELECT * FROM product ORDER BY id DESC";
+                                                    $result = mysqli_query($link_cus, $sql);
+                                                    $num = mysqli_num_rows($result);
+                                                    $numberPages = 5;
+                                                    $totalPages = ceil($num/$numberPages);
+                                                    //echo $totalPages;
+                                                    // Creating pagination buttons
 
-                        <?php
+                                                    if(isset($_GET['page'])) {
+                                                        $page=$_GET['page'];
+                                                        //echo $page;
+                                                    }else {
+                                                        $page=1;
+                                                    }
 
-                        require_once '../login_page/db.php';
+                                                    if($page>1) {
+                                                        echo "<a href='homepage.php?page=".($page-1)."' class='btn btn-sm btn-dark btn-default' style='background-color: #3c8dbc; color: White'>Previous</a>";
+                                                    }
 
-                        // Displaying product from database
+                                                    for($btn=1;$btn<=$totalPages;$btn++) {
+                                                        echo '<a href="homepage.php?page='.$btn.'" class="btn btn-sm btn-dark btn-default mx-1 my-3" style="background-color: #3c8dbc; color: White">'.$btn.'</a>';
+                                                    }
 
-                        $sql = "SELECT * FROM product ORDER BY id DESC";
-                        $result=mysqli_query($link1, $sql);
-                        if($result) {
-                            while($row=mysqli_fetch_assoc($result)) {
-                                $id=$row['id'];
-                                $name=$row['name'];
-                                $price=$row['price'];
-                                $quantity=$row['quantity'];
-                                $venid=$row['ven_id'];
-                                echo '<tr>
-                                <th scope="row">'.$id.'</th>
-                                <td>'.$name.'</td>
-                                <td>'.$price.'</td>
-                                <td>'.$quantity.'</td>
-                                <td>'.$venid.'</td>
-                                <td>
-                                <button class="btn btn-primary"><a href="" class="text-light">View</a></button>
-                                <button class="btn btn-success"><a href="" class="text-light">Buy</a></button>
-                                </td>
-                                </tr>';
-                            }
-                        }
-
-                        ?>
+                                                    if($page>=1) {
+                                                        echo "<a href='homepage.php?page=".($page+1)."' class='btn btn-sm btn-dark btn-default' style='background-color: #3c8dbc; color: White'>Next</a>";
+                                                    }
 
 
-                        </tbody>
-                    </table>
 
- 
+                                                    $startinglimit = ($page-1) * $numberPages;
+                                                    $sql="SELECT * FROM product ORDER BY id DESC LIMIT ".$startinglimit.','.$numberPages;
+                                                    $result=mysqli_query($link_cus, $sql);
+                                                    while($row=mysqli_fetch_assoc($result)) {
+                                                        echo '<tr>
+                                                        <th scope="row">'.$row['id'].'</th>
+                                                        <td>'.$row['name'].'</td>
+                                                        <td>$'.$row['price'].'</td>
+                                                        <td class="text-center">'.$row['quantity'].'</td>
+                                                        <td class="text-center">'.$row['ven_id'].'</td>
+                                                        <td class="text-center">
+                                                        <a href="" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
+                                                        <a href="orders.php?prod_id='.$row['id'].'" class="btn btn-xs btn-default" style="background-color: #6C9D2F; color: White">Buy</a>
+                                                        </td>
+                                                        </tr>';
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>

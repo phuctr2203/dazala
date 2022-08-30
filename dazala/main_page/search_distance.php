@@ -72,7 +72,7 @@
                                         "<span class='hidden-xs'>Name: " . $row['name']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Address: " . $row['address']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Latitude: " . $row['latitude']. "</span>". "<br>".
-                                        "<span class='hidden-xs'>Longtitude: " . $row['longtitude']. "</span>". "<br>".
+                                        "<span class='hidden-xs'>Longitude: " . $row['longtitude']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Username: " . $row['username']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Password: " . $row['password']. "</span>". "<br>";
                                 ?>
@@ -123,37 +123,56 @@
                             <div class="box">
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <!-- chỗ này để display hàng hóa các thứ các thứ, để trong clas này nhé (IMPORTANT) -->
-                                        <?php
-                                            if(isset($_POST['submit'])) {
-                                                $search_distance = $_POST['search_distance'];
-                                                $latitude = $_SESSION['cus_latitude'];
-                                                $longtitude = $_SESSION['cus_longtitude'];
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Address</th>
+                                                    <th scope="col">Latitude</th>
+                                                    <th scope="col">Longitude</th>
+                                                    <th scope="col">Distance</th>
+                                                    <th scope="col" class="text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                    if(isset($_POST['submit'])) {
+                                                        $search_distance = $_POST['search_distance'];
+                                                        $latitude = $_SESSION['cus_latitude'];
+                                                        $longtitude = $_SESSION['cus_longtitude'];
 
-                                                $sql_search_distance = "CALL search_vendor_based_on_distance($search_distance, $latitude, $longtitude);";
-                                                $rows_search_distance = $customer->query($sql_search_distance);
+                                                        $sql_search_distance = "CALL search_vendor_based_on_distance($search_distance, $latitude, $longtitude);";
+                                                        $rows_search_distance = $customer->query($sql_search_distance);
 
-                                                if($rows_search_distance->rowCount() == 0) {
-                                                    echo "<br>" . "No Results Found";
-                                                }
+                                                        if($rows_search_distance->rowCount() == 0) {
+                                                            echo '<th scope="row" colspan="7" class="text-center">No Results Found</th>';
+                                                        }
 
-                                                foreach($rows_search_distance as $row) {
-                                                    $id = $row['id'];
-                                                    $name = $row['name'];
-                                                    $address = $row['address'];
-                                                    $latitude = $row['latitude'];
-                                                    $longtitude = $row['longtitude'];
-                                                    $distance = $row['distance'];
+                                                        foreach($rows_search_distance as $row) {
+                                                            $id = $row['id'];
+                                                            $name = $row['name'];
+                                                            $address = $row['address'];
+                                                            $latitude = $row['latitude'];
+                                                            $longtitude = $row['longtitude'];
+                                                            $distance = $row['distance'];
 
-                                                    echo "<br><br>ID: " . $row['id']. "<br>name: " . $row['name']. "<br>address: " . $row['address']. "<br>latitude: " . $row['latitude']. "<br>longtitude: " . $row['longtitude']. "<br>distance: " .$row['distance'] . " km<br>";
-
-                                                    echo "<a href='ven_product.php?id=$id' >View This Vendor's Product</a><br>";   
-                                                }
-                                            }
-                                        ?>   
-                                    </div>
-                                    <div class="paginate">
-                                        <!-- thêm paginatation vào đây nhé -->
+                                                            echo '<tr>
+                                                            <th scope="row">'.$id.'</th>
+                                                            <td>'.$name.'</td>
+                                                            <td>'.$address.'</td>
+                                                            <td>'.$latitude.'</td>
+                                                            <td>'.$longtitude.'</td>
+                                                            <td>'.$distance.'KM</td>
+                                                            <td class="text-center">
+                                                            <a href="ven_product.php?id='.$id.'" class="btn btn-xs btn-default" style="background-color: #6C9D2F; color: White">Visit This Store</a>
+                                                            </td>
+                                                            </tr>';  
+                                                        }
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

@@ -69,10 +69,10 @@ if (isset($_POST['act'])) {
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
-                        <button type="submit" name="act" value="INSERT" class="btn btn-primary btn-block btn-flat" style="background-color: Green;">Add Product</button>
+                        <button type="submit" name="act" value="INSERT" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Add Product</button>
                     </div>
                     <div class="col-xs-6">
-                        <button onclick='window.location.href="vendor_product.php";' class="btn btn-primary btn-block btn-flat" style="background-color: blue;">Back To Main Page</button>  
+                        <button onclick='window.location.href="vendor_product.php";' class="btn btn-primary btn-block btn-flat" style="background-color: #3c8dbc;">Back To Main Page</button>  
                     </div>
                 </div>
             </div>

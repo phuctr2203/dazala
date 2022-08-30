@@ -66,7 +66,7 @@
                                         "<span class='hidden-xs'>Name: " . $row['name']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Address: " . $row['address']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Latitude: " . $row['latitude']. "</span>". "<br>".
-                                        "<span class='hidden-xs'>Longtitude: " . $row['longtitude']. "</span>". "<br>".
+                                        "<span class='hidden-xs'>Longitude: " . $row['longtitude']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Username: " . $row['username']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Password: " . $row['password']. "</span>". "<br>";
                                 ?>
@@ -87,36 +87,71 @@
                     ?>
                 </section>
                 <section class="content">
-                    <div class="row">
+                <div class="row">
                         <div class="col-md-12">
                             <div class="box">
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <!-- chỗ này để display hàng hóa các thứ các thứ, để trong clas này nhé (IMPORTANT) -->
-                                        <?php
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col" class="text-center">Quantity</th>
+                                                    <th scope="col" class="text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                    // Displaying product from database
+                                                    $sql = "SELECT * FROM product 
+                                                    WHERE ven_id = '$ven_id'";
+                                                    $result = mysqli_query($link_ven, $sql);
+                                                    $num = mysqli_num_rows($result);
+                                                    $numberPages = 3;
+                                                    $totalPages = ceil($num/$numberPages);
+                                                    //echo $totalPages;
+                                                    // Creating pagination buttons
 
-                                            $sql_show_product_vendor = "SELECT * FROM product 
-                                            WHERE ven_id = (SELECT id FROM vendor WHERE id = '$ven_id')";
+                                                    if(isset($_GET['page'])) {
+                                                        $page=$_GET['page'];
+                                                        //echo $page;
+                                                    }else {
+                                                        $page=1;
+                                                    }
 
-                                            $stmt_show_product_vendor = $vendor->query($sql_show_product_vendor);
+                                                    if($page>1) {
+                                                        echo "<a href='vendor_product.php?page=".($page-1)."' class='btn btn-sm btn-dark btn-default' style='background-color: #3c8dbc; color: White'>Previous</a>";
+                                                    }
 
-                                            foreach($stmt_show_product_vendor as $row) {
-                                            $id = $row['id'];
-                                            $name = $row['name'];
-                                            $price = $row['price'];
-                                            $quantity = $row['quantity'];
-                                            $ven_id = $row['ven_id'];
+                                                    for($btn=1;$btn<=$totalPages;$btn++) {
+                                                        echo '<a href="vendor_product.php?page='.$btn.'" class="btn btn-sm btn-dark btn-default mx-1 my-3" style="background-color: #3c8dbc; color: White">'.$btn.'</a>';
+                                                    }
 
-                                            echo "<br>ID: " . $id. "<br>name: " . $name. "<br>price: $" . $price. "<br>quantity: " . $quantity. "<br>vendor id: " . $ven_id."";
-                                            echo "<br>";
+                                                    if($page>=1) {
+                                                        echo "<a href='vendor_product.php?page=".($page+1)."' class='btn btn-sm btn-dark btn-default' style='background-color: #3c8dbc; color: White'>Next</a>";
+                                                    }
 
-                                            echo "<a href='edit_product.php?prod_id=$id' >Edit Product</a><br>";
-                                            }
 
-                                        ?>   
-                                    </div>
-                                    <div class="paginate">
-                                        <!-- thêm paginatation vào đây nhé -->
+                                                    $startinglimit = ($page-1) * $numberPages;
+                                                    $sql="SELECT * FROM product WHERE ven_id = '$ven_id' LIMIT ".$startinglimit.','.$numberPages;
+                                                    $result=mysqli_query($link_ven, $sql);
+                                                    while($row=mysqli_fetch_assoc($result)) {
+                                                        echo '<tr>
+                                                        <th scope="row">'.$row['id'].'</th>
+                                                        <td>'.$row['name'].'</td>
+                                                        <td>'.$row['price'].'</td>
+                                                        <td class="text-center">'.$row['quantity'].'</td>
+                                                        <td class="text-center">
+                                                        <a href="" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
+                                                        <a href="edit_product.php?prod_id='.$row['id'].'" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">Edit</a>
+                                                        </td>
+                                                        </tr>';
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

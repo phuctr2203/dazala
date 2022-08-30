@@ -66,7 +66,7 @@
                                         "<span class='hidden-xs'>Name: " . $row['name']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Address: " . $row['address']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Latitude: " . $row['latitude']. "</span>". "<br>".
-                                        "<span class='hidden-xs'>Longtitude: " . $row['longtitude']. "</span>". "<br>".
+                                        "<span class='hidden-xs'>Longitude: " . $row['longtitude']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Username: " . $row['username']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Password: " . $row['password']. "</span>". "<br>";
                                 ?>
@@ -92,7 +92,6 @@
                             <div class="box">
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <!-- chỗ này để display thêm cái gì đó ngoài câu Thank You? (IMPORTANT) -->
                                         <?php
                                             $prod_id = $_GET['prod_id'];
                                             $cus_id = $_SESSION['cus_id'];

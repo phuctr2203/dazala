@@ -21,16 +21,19 @@ $vendor = new PDO('mysql:host=localhost;dbname=dazala', $ven_user, $ven_pass);
 $customer = new PDO('mysql:host=localhost;dbname=dazala', $cus_user, $cus_pass);
 $shipper = new PDO('mysql:host=localhost;dbname=dazala', $ship_user, $ship_pass);
 
-<<<<<<< HEAD
+$link_cus = mysqli_connect('localhost', 'customer', 'customer', 'dazala');
 
-$sql_vendor = "SET DEFAULT ROLE vendor TO vendor@localhost;";
-$stmt_vendor = $vendor->query($sql_vendor);
+$link_ven = mysqli_connect('localhost', 'vendor', 'vendor', 'dazala');
 
-$sql_customer = "SET DEFAULT ROLE customer TO customer@localhost;";
-$stmt_customer = $customer->query($sql_customer);
+$link_ship = mysqli_connect('localhost', 'shipper', 'shipper', 'dazala');
 
-$sql_shipper= "SET DEFAULT ROLE shipper TO shipper@localhost;";
-$stmt_shipper = $shipper->query($sql_shipper);
->>>>>>> c6ff1b543012f12f3efc96f4ff7b1e68883807b5
+// $sql_vendor = "SET DEFAULT ROLE vendor";
+// $stmt_vendor = $vendor->query($sql_vendor);
+
+// $sql_customer = "SET DEFAULT ROLE customer";
+// $stmt_customer = $customer->query($sql_customer);
+
+// $sql_shipper= "SET DEFAULT ROLE shipper";
+// $stmt_shipper = $shipper->query($sql_shipper);
 
 ?>

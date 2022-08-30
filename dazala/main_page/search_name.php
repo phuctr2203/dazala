@@ -66,7 +66,7 @@
                                         "<span class='hidden-xs'>Name: " . $row['name']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Address: " . $row['address']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Latitude: " . $row['latitude']. "</span>". "<br>".
-                                        "<span class='hidden-xs'>Longtitude: " . $row['longtitude']. "</span>". "<br>".
+                                        "<span class='hidden-xs'>Longitude: " . $row['longtitude']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Username: " . $row['username']. "</span>". "<br>".
                                         "<span class='hidden-xs'>Password: " . $row['password']. "</span>". "<br>";
                                 ?>
@@ -117,34 +117,51 @@
                             <div class="box">
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <!-- chỗ này để display hàng hóa các thứ các thứ, để trong clas này nhé (IMPORTANT) -->
-                                        <?php
-                                            if(isset($_POST['submit'])) {
-                                                $search_name = $_POST['search_name'];
-                                                $sql_search_name = "CALL search_product_based_on_name('$search_name');";
-                                                $rows_search_name = $customer->query($sql_search_name);
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col" class="text-center">Quantity</th>
+                                                    <th scope="col" class="text-center">Vendor ID</th>
+                                                    <th scope="col" class="text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                    if(isset($_POST['submit'])) {
+                                                        $search_name = $_POST['search_name'];
+                                                        $sql_search_name = "CALL search_product_based_on_name('$search_name');";
+                                                        $rows_search_name = $customer->query($sql_search_name);
 
-                                                if($rows_search_name->rowCount() == 0) {
-                                                    echo "<br>" . "No Results Found";
-                                                }
+                                                        if($rows_search_name->rowCount() == 0) {
+                                                            echo '<th scope="row" colspan="6" class="text-center">No Results Found</th>';
+                                                        }
 
-                                                foreach($rows_search_name as $row) {
-                                                    $id = $row['id'];
-                                                    $name = $row['name'];
-                                                    $price = $row['price'];
-                                                    $quantity = $row['quantity'];
-                                                    $ven_id = $row['ven_id'];
+                                                        foreach($rows_search_name as $row) {
+                                                            $id = $row['id'];
+                                                            $name = $row['name'];
+                                                            $price = $row['price'];
+                                                            $quantity = $row['quantity'];
+                                                            $ven_id = $row['ven_id'];
 
-                                                    echo "<br>ID: " . $id. "<br>name: " . $name. "<br>price: $" . $price. "<br>quantity: " . $quantity. "<br>vendor id: " . $ven_id."";
-                                                    echo "<br>";
-
-                                                    
-                                                }
-                                            }
-                                        ?>   
-                                    </div>
-                                    <div class="paginate">
-                                        <!-- thêm paginatation vào đây nhé -->
+                                                            echo '<tr>
+                                                            <th scope="row">'.$id.'</th>
+                                                            <td>'.$name.'</td>
+                                                            <td>$'.$price.'</td>
+                                                            <td class="text-center">'.$quantity.'</td>
+                                                            <td class="text-center">'.$ven_id.'</td>
+                                                            <td class="text-center">
+                                                            <a href="" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
+                                                            <a href="orders.php?prod_id='.$id.'" class="btn btn-xs btn-default" style="background-color: #6C9D2F; color: White">Buy</a>
+                                                            </td>
+                                                            </tr>';
+                                                        }
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
