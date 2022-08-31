@@ -331,7 +331,7 @@ DELIMITER ;
 
 #--- FUNCTION RETURNS HUB ID NEAREST TO THE CUSTOMER ---#
 DELIMITER $$
-CREATE PROCEDURE cal_nearest_distance(IN purchased_prod_id varchar(10), IN buyer_id varchar(10))
+CREATE PROCEDURE cal_nearest_distance(IN buyer_id varchar(10))
 BEGIN
 	DECLARE nearest_hub_id VARCHAR(10);
     DECLARE lat_prod_customer DECIMAL(10,4);
