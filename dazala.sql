@@ -338,7 +338,7 @@ BEGIN
 	DECLARE lon_prod_customer DECIMAL(10,4);
 	SELECT latitude INTO lat_prod_customer FROM customer WHERE id = buyer_id;
     SELECT longtitude INTO lon_prod_customer FROM customer WHERE id = buyer_id;
-    SELECT id INTO nearest_hub_id FROM hub WHERE cal_distance(lat_prod_customer,lon_prod_customerr, latitude, longtitude) IN (SELECT MIN(cal_distance(lat_prod_customer,lon_prod_customer, latitude, longtitude)) FROM HUB);
+    SELECT id INTO nearest_hub_id FROM hub WHERE cal_distance(lat_prod_customer,lon_prod_customer, latitude, longtitude) IN (SELECT MIN(cal_distance(lat_prod_customer,lon_prod_customer, latitude, longtitude)) FROM HUB);
     SELECT * FROM hub WHERE id = nearest_hub_id;
 END $$
 DELIMITER ;
