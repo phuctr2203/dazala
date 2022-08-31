@@ -144,7 +144,7 @@
                                                         <td>'.$row['price'].'</td>
                                                         <td class="text-center">'.$row['quantity'].'</td>
                                                         <td class="text-center">
-                                                        <a href="" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
+                                                        <a href="display_product_detail_vendor_page.php?prod_id='.$row['id'].'" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
                                                         <a href="edit_product.php?prod_id='.$row['id'].'" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">Edit</a>
                                                         </td>
                                                         </tr>';
