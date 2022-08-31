@@ -155,11 +155,16 @@ session_start();
                                                             "brand" => $sub_brand
                                                         ]);
                                                         foreach($document as $sub_document) {
-                                                            echo "Product ID: " ,$sub_document->_id . "<br>";
-                                                            echo "Category: " ,$sub_document->category . "<br>";
-                                                            echo "Brand: " ,$sub_document->brand . "<br>";
-                                                            echo "Condition: " ,$sub_document->condition . "<br>";
-                                                            echo "Description: " ,$sub_document->description . "<br><br>";
+                                                            $sql = "SELECT * FROM product WHERE id = '$sub_document->_id';";
+                                                            $stmt = $customer->query($sql);
+                                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                                            echo $row['id'] . "<br>";
+                                                            echo $row['name'] . "<br>";
+                                                            echo $row['price'] . "<br>";
+                                                            echo $row['quantity'] . "<br>";
+                                                            echo $row['ven_id'] . "<br><br>";
+                                                            
                                                         }
                                                     }
 
