@@ -103,7 +103,7 @@
                                             $product = $stmt->fetch(PDO::FETCH_ASSOC);
                                             $bill = $product['price'];
 
-                                            $sql_find_near_hub = "CALL cal_nearest_distance('$prod_id');";
+                                            $sql_find_near_hub = "CALL cal_nearest_distance('$prod_id', '$cus_id');";
                                             $stmt_find = $customer->query($sql_find_near_hub);
                                             $near_hub = $stmt_find->fetch(PDO::FETCH_ASSOC);
                                             $hub_id = $near_hub['id'];
