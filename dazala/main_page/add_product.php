@@ -11,10 +11,28 @@ if (isset($_POST['act'])) {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $quantity = $_POST['quantity'];
+    $category = $_POST['category'];
+    $brand = $_POST['brand'];
+    $condition = $_POST['condition'];
+    $description = $_POST['description'];
 
-    $sql = "INSERT INTO product (name, price, quantity, ven_id) VALUES ('$name', $price, $quantity, '$ven_id')";
-    $stmt = $vendor->query($sql);
+    $sql_insert = "INSERT INTO product (name, price, quantity, ven_id) VALUES ('$name', $price, $quantity, '$ven_id')";
+    $stmt = $vendor->query($sql_insert);
     $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $sql_get_id = "SELECT id FROM product WHERE ven_id = '$ven_id' ORDER BY id DESC LIMIT 1";
+    $stmt_get_id = $vendor->query($sql_get_id);
+    $rows_id = $stmt_get_id->fetch(PDO::FETCH_ASSOC);
+
+    $prod_id = $rows_id['id'];
+
+    $insertOneProduct = $collection->insertOne([
+        "_id" => $prod_id,
+        "category" => $category,
+        "brand" => $brand,
+        "condition" => $condition,
+        "description" => $description
+    ]);
 
     if ($stmt->rowCount() > 0) {
         echo "<script>
@@ -66,6 +84,41 @@ if (isset($_POST['act'])) {
                 </div>
                 <div class="form-group has-feedback">
                     <input name="quantity" type="int" class="form-control" placeholder="Quantity" required>                    
+                </div>
+                <div class="form-group has-feedback">Category</div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <input type="radio" name="category" value="vendor" required>Smart Phone</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="category" value="customer" required>Laptop</input>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group has-feedback">Brand</div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <input type="radio" name="brand" value="apple" required>Apple</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="brand" value="samsung" required>Samsung</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="brand" value="vertu" required>Vertu</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="brand" value="msi" required>MSI</input>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="brand" value="Predator" required>Predator</input>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group has-feedback">
+                    <input name="condition" type="text" class="form-control" placeholder="Condition" required>                    
+                </div>
+                <div class="form-group has-feedback">
+                    <input name="description" type="text" class="form-control" placeholder="Description" required>                    
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
