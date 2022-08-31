@@ -157,7 +157,7 @@
                                                             <td class="text-center">'.$quantity.'</td>
                                                             <td class="text-center">'.$ven_id.'</td>
                                                             <td class="text-center">
-                                                            <a href="" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
+                                                            <a href="display_product_detail_customer_page.php?prod_id='.$row['id'].'" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
                                                             <a href="orders.php?prod_id='.$id.'" class="btn btn-xs btn-default" style="background-color: #6C9D2F; color: White">Buy</a>
                                                             </td>
                                                             </tr>';
