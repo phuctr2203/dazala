@@ -88,29 +88,29 @@ if (isset($_POST['act'])) {
                 <div class="form-group has-feedback">Category</div>
                 <div class="row">
                     <div class="col-xs-4">
-                        <input type="radio" name="category" value="vendor" required>Smart Phone</input>
+                        <input type="radio" name="category" value="Smart Phone" required>Smart Phone</input>
                     </div>
                     <div class="col-xs-4">
-                        <input type="radio" name="category" value="customer" required>Laptop</input>
+                        <input type="radio" name="category" value="Laptop" required>Laptop</input>
                     </div>
                 </div>
                 <br>
                 <div class="form-group has-feedback">Brand</div>
                 <div class="row">
                     <div class="col-xs-4">
-                        <input type="radio" name="brand" value="apple" required>Apple</input>
+                        <input type="radio" name="brand" value="Apple" required>Apple</input>
                     </div>
                     <div class="col-xs-4">
-                        <input type="radio" name="brand" value="samsung" required>Samsung</input>
+                        <input type="radio" name="brand" value="Samsung" required>Samsung</input>
                     </div>
                     <div class="col-xs-4">
-                        <input type="radio" name="brand" value="vertu" required>Vertu</input>
+                        <input type="radio" name="brand" value="Vertu" required>Vertu</input>
                     </div>
                     <div class="col-xs-4">
-                        <input type="radio" name="brand" value="msi" required>MSI</input>
+                        <input type="radio" name="brand" value="Msi" required>MSI</input>
                     </div>
                     <div class="col-xs-4">
-                        <input type="radio" name="brand" value="Predator" required>Predator</input>
+                        <input type="radio" name="brand" value="Acer" required>Predator</input>
                     </div>
                 </div>
                 <br>
