@@ -10,10 +10,28 @@ if (isset($_POST['act'])) {
 
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
+    $category = $_POST['category'];
+    $brand = $_POST['brand'];
+    $condition = $_POST['condition'];
+    $made_in = $_POST['made_in'];
+    $description = $_POST['description'];
 
     $sql = "CALL ven_edit_product($price, $quantity, '$prod_id');";
     $stmt = $vendor->query($sql);
     $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $update_result = $collection->updateOne(
+        ['_id' => $prod_id],
+        [
+            '$set' => [
+                'category'=> $category,
+                'brand' => $brand,
+                'condition'=> $condition,
+                'made_in' => $made_in,
+                'description'=> $description
+            ]
+        ]
+    );
 
    
     echo "<script>
@@ -57,6 +75,22 @@ if (isset($_POST['act'])) {
                     <div class="form-group has-feedback">
                         <input name="price" type="decimal" class="form-control" placeholder="Price" required>                    
                     </div>
+                    <div class="form-group has-feedback">
+                        <input name="category" type="text" class="form-control" placeholder="Category" required>                    
+                    </div>                    
+                    <div class="form-group has-feedback">
+                        <input name="brand" type="text" class="form-control" placeholder="Brand" required>                    
+                    </div>                    
+                    <div class="form-group has-feedback">
+                        <input name="condition" type="text" class="form-control" placeholder="Condition" required>                    
+                    </div>                    
+                    <div class="form-group has-feedback">
+                        <input name="made_in" type="text" class="form-control" placeholder="Made In" required>                    
+                    </div>                    
+                    <div class="form-group has-feedback">
+                        <textarea name="description" type="text" class="form-control" placeholder="Description" rows="4" cols="50" required></textarea>                    
+                    </div>
+
                     <div class="row">
                         <div class="col-xs-6">
                             <button type="submit" name="act" value="UPDATE" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Edit Product</button>
