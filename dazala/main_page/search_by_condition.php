@@ -1,9 +1,10 @@
 <?php
-    use MongoDB\Client;
-    include_once("../vendor/autoload.php");
-    $client = new Client("mongodb://127.0.0.1:27017");
-    $collection = $client->dazala->dazala;
+
+require_once '../login_page/db.php';
+
+session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -84,38 +85,38 @@
                         <div class="col-lg-12">
                             <div class="col-sm-6">
                             <section class="search-form">
-                                <form action="" method="post">
-                                    <div class="col-sm-5">.
-                                            <select name="Category_Option" id="Category Option">
+                            <form action="" method="post">
+                                <div class="col-sm-5">.
+                                        <select name="category">
                                             <option value="" style="font-family:Arial, FontAwesome" class="form-control" disabled selected>Choose category</option>
                                             <option value="Smart Phone" style="font-family:Arial, FontAwesome" class="form-control">Smart Phone</option>
                                             <option value="Laptop" style="font-family:Arial, FontAwesome" class="form-control">Laptop</option>
-                                            </select>
-                                    </div>
-                                    <div class="col-sm-5"> 
-                                            <input type="checkbox" name="brand" id="brand" value="Apple">Apple</input>  
-                                    </div>
-                                    <div class="col-sm-5"> 
-                                            <input type="checkbox" name="brand" id="brand" value="Acer">Acer</input>  
-                                    </div>
-                                    <div class="col-sm-5"> 
-                                            <input type="checkbox" name="brand" id="brand" value="Samsung">Samsung</input>  
-                                    </div>
-                                    <div class="col-sm-5"> 
-                                            <input type="checkbox" name="brand" id="brand" value="Redmi">Redmi</input>  
-                                    </div>
-                                    <div class="col-sm-5"> 
-                                            <input type="checkbox" name="brand" id="brand" value="Vertu">Vertu</input>  
-                                    </div>
-                                    <div class="col-sm-5"> 
-                                            <input type="checkbox" name="brand" id="brand" value="MSI">MSI</input>  
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
-                                            <span>Search</span>
-                                        </button>
-                                    </div>
-                                </form>
+                                        </select>
+                                </div>
+                                <div class="col-sm-5"> 
+                                    <input type="checkbox" name="brand[]" value="Apple">Apple</input>  
+                                </div>
+                                <div class="col-sm-5"> 
+                                    <input type="checkbox" name="brand[]" value="Acer">Acer</input>  
+                                </div>
+                                <div class="col-sm-5"> 
+                                    <input type="checkbox" name="brand[]" value="Samsung">Samsung</input>  
+                                </div>
+                                <div class="col-sm-5"> 
+                                    <input type="checkbox" name="brand[]" value="Redmi">Redmi</input>  
+                                </div>
+                                <div class="col-sm-5"> 
+                                    <input type="checkbox" name="brand[]" value="Vertu">Vertu</input>  
+                                </div>
+                                <div class="col-sm-5"> 
+                                    <input type="checkbox" name="brand[]" value="MSI">MSI</input>  
+                                </div>
+                                <div class="col-sm-2">
+                                    <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
+                                        <span>Search</span>
+                                    </button>
+                                </div>
+                            </form>
                             </section>
                             </div>
                             <div class="col-sm-3">
@@ -144,18 +145,26 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php 
-                                                    if(isset($_POST['submit'])) {
-                                                        $category = $_POST['Category_Option'];
-                                                        $brand_arr = $_POST['brand'];
-                                                        $document = $collection->find(
-                                                            ['category' => $category]
-                                                        );
+                                            <?php 
+                                                if(isset($_POST['submit'])) {
+                                                    $category = $_POST['category'];
+                                                    $brand_arr = $_POST['brand'];
+                                                    foreach($brand_arr as $sub_brand) {
+                                                        $document = $collection->find([
+                                                            "category" => $category,
+                                                            "brand" => $sub_brand
+                                                        ]);
                                                         foreach($document as $sub_document) {
-                                                            echo $sub_document->brand. "<br>";
+                                                            echo "Product ID: " ,$sub_document->_id . "<br>";
+                                                            echo "Category: " ,$sub_document->category . "<br>";
+                                                            echo "Brand: " ,$sub_document->brand . "<br>";
+                                                            echo "Condition: " ,$sub_document->condition . "<br>";
+                                                            echo "Description: " ,$sub_document->description . "<br><br>";
                                                         }
                                                     }
-                                                ?>
+
+                                                }
+                                            ?>
                                             </tbody>
                                         </table>
                                     </div>
