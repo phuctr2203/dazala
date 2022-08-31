@@ -367,13 +367,6 @@ BEGIN
 	WHERE ((select cal_distance(user_lat, user_lon, v.latitude, v.longtitude)) <= input_distance);
 END $$
 DELIMITER ;
-
-SELECT (111.111 *
-    DEGREES(ACOS(LEAST(1.0, COS(RADIANS(11))
-	* COS(RADIANS(12))
-	* COS(RADIANS(10 - 10))
-	+ SIN(RADIANS(11))
-	* SIN(RADIANS(12))))));
     
 #---- Display Product of Particular Vendor ------#
 DELIMITER $$
@@ -383,8 +376,6 @@ BEGIN
     WHERE NAME = selected_vendor);
 END $$
 DELIMITER ;
-
-CALL show_product_of_particular_vendor('phuc');
 
 #----- trigger to update quantity after buy a product -----#
 DELIMITER $$
@@ -415,12 +406,6 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
-
-#----- Generate random second from 10 to 30 ----#
-SELECT SEC_TO_TIME(
-	FLOOR(
-	TIME_TO_SEC('00:00:10') + RAND() * (
-	TIME_TO_SEC(TIMEDIFF('00:00:20', '00:00:00')))));
     
 #------ Funtion returns random 10 - 30 seconds -----#
 SET GLOBAL log_bin_trust_function_creators = 1;
