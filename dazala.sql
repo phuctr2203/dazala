@@ -2,36 +2,6 @@ DROP DATABASE dazala;
 CREATE DATABASE dazala;
 USE dazala;
 
-#----- CREATE USER AND ROLE -----#
-CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
-CREATE ROLE vendor;
-GRANT SELECT, INSERT, UPDATE, DELETE ON dazala.product TO vendor;
-GRANT SELECT, INSERT, UPDATE ON dazala.vendor TO vendor;
-GRANT EXECUTE ON PROCEDURE ven_edit_product TO vendor;
-GRANT vendor TO 'vendor'@'localhost';
-
-CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
-CREATE ROLE customer;
-GRANT SELECT, INSERT, DELETE, UPDATE ON dazala.customer TO customer;
-GRANT SELECT, UPDATE ON dazala.product TO customer;
-GRANT SELECT, INSERT ON dazala.orders TO customer;
-GRANT EXECUTE ON PROCEDURE search_product_based_on_name TO customer;
-GRANT EXECUTE ON PROCEDURE search_product_based_on_price TO customer;
-GRANT EXECUTE ON PROCEDURE search_vendor_based_on_distance TO customer;
-GRANT EXECUTE ON FUNCTION cal_distance TO customer;
-GRANT EXECUTE ON PROCEDURE cal_nearest_distance TO customer;
-GRANT EXECUTE ON PROCEDURE cus_buy_product TO customer;
-GRANT customer TO 'customer'@'localhost';
-
-CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
-CREATE ROLE shipper;
-GRANT SELECT, INSERT ON dazala.shipper TO shipper;
-GRANT SELECT, UPDATE ON dazala.orders TO shipper;
-GRANT SELECT ON dazala.hub TO shipper;
-GRANT EXECUTE ON PROCEDURE shipped_orders TO shipper;
-GRANT EXECUTE ON PROCEDURE cancel_orders TO shipper;
-GRANT shipper TO 'shipper'@'localhost';
-
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 #----- CREATE TABLE -----#
@@ -255,11 +225,6 @@ FOREIGN KEY (hub_id) REFERENCES hub(id);
 #-------- GENERAL COMMAND ----------#
 
 #----- SELECT COMMAND ----#
-select * from customer;
-select * from vendor;
-select * from product;
-select * from shipper;
-select * from hub;
 
 #----- INSERT COMMAND -----#
 insert into vendor(name, address, latitude, longtitude, username, password) values 
@@ -271,7 +236,7 @@ insert into product (name, price, quantity, ven_id) values
 ('Iphone X', 300, 5, 'VD001'),
 ('Iphone 11', 350, 10, 'VD001'),
 ('Samsung 10', 400, 5, 'VD001'),
-('Xiaomi Tommy', 450, 10, 'VD001'),
+('Samsung Z Flip', 450, 10, 'VD001'),
 ('Vertu', 5000, 5, 'VD001'),
 ('Macbook Air M1', 1500, 10, 'VD001'),
 ('Macbook Pro M1', 2000, 10, 'VD001'),
@@ -457,3 +422,36 @@ BEGIN
 	UPDATE orders SET orders_status = 'Cancelled' WHERE id = orders_id;
 END $$
 DELIMITER ;
+
+#----- CREATE USER AND ROLE -----#
+CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
+CREATE ROLE vendor;
+
+CREATE USER 'customer'@'localhost' IDENTIFIED BY 'customer';
+CREATE ROLE customer;
+
+CREATE USER 'shipper'@'localhost' IDENTIFIED BY 'shipper';
+CREATE ROLE shipper;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON dazala.product TO vendor;
+GRANT SELECT, INSERT, UPDATE ON dazala.vendor TO vendor;
+GRANT EXECUTE ON PROCEDURE ven_edit_product TO vendor;
+GRANT vendor TO 'vendor'@'localhost';
+
+GRANT SELECT, INSERT, DELETE, UPDATE ON dazala.customer TO customer;
+GRANT SELECT, UPDATE ON dazala.product TO customer;
+GRANT SELECT, INSERT ON dazala.orders TO customer;
+GRANT EXECUTE ON PROCEDURE search_product_based_on_name TO customer;
+GRANT EXECUTE ON PROCEDURE search_product_based_on_price TO customer;
+GRANT EXECUTE ON PROCEDURE search_vendor_based_on_distance TO customer;
+GRANT EXECUTE ON FUNCTION cal_distance TO customer;
+GRANT EXECUTE ON PROCEDURE cal_nearest_distance TO customer;
+GRANT EXECUTE ON PROCEDURE cus_buy_product TO customer;
+GRANT customer TO 'customer'@'localhost';
+
+GRANT SELECT, INSERT ON dazala.shipper TO shipper;
+GRANT SELECT, UPDATE ON dazala.orders TO shipper;
+GRANT SELECT ON dazala.hub TO shipper;
+GRANT EXECUTE ON PROCEDURE shipped_orders TO shipper;
+GRANT EXECUTE ON PROCEDURE cancel_orders TO shipper;
+GRANT shipper TO 'shipper'@'localhost';
