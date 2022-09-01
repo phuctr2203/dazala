@@ -10,7 +10,7 @@ if (isset($_POST['act'])) {
 
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
-    $category = $_POST['category'];
+    $condition = $_POST['condition'];
     $made_in = $_POST['made_in'];
     $description = $_POST['description'];
 
@@ -22,7 +22,7 @@ if (isset($_POST['act'])) {
         ['_id' => $prod_id],
         [
             '$set' => [
-                'category'=> $category,
+                'condition'=> $condition,
                 'made_in' => $made_in,
                 'description'=> $description
             ]
