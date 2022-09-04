@@ -236,7 +236,7 @@ insert into product (name, price, quantity, ven_id) values
 ('Iphone X', 300, 5, 'VD001'),
 ('Iphone 11', 350, 10, 'VD001'),
 ('Samsung 10', 400, 5, 'VD001'),
-('Samsung Z Flip', 450, 10, 'VD001'),
+('Xiaomi Tommy', 450, 10, 'VD001'),
 ('Vertu', 5000, 5, 'VD001'),
 ('Macbook Air M1', 1500, 10, 'VD001'),
 ('Macbook Pro M1', 2000, 10, 'VD001'),
@@ -411,7 +411,9 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE shipped_orders(IN orders_id VARCHAR(10))
 BEGIN
+	START TRANSACTION;
 	UPDATE orders SET orders_status = 'Shipped' WHERE id = orders_id;
+    COMMIT;
 END $$
 DELIMITER ;
 
@@ -419,9 +421,26 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE cancel_orders(IN orders_id VARCHAR(10))
 BEGIN
+	START TRANSACTION;
 	UPDATE orders SET orders_status = 'Cancelled' WHERE id = orders_id;
+    COMMIT;
 END $$
 DELIMITER ;
+
+#----- Partitioning -----#
+ALTER TABLE product PARTITION BY RANGE(price) (
+	PARTITION p0 VALUES LESS THAN (100),
+	PARTITION p1 VALUES LESS THAN (300),
+	PARTITION p2 VALUES LESS THAN (500),
+	PARTITION p3 VALUES LESS THAN (1000),
+	PARTITION p4 VALUES LESS THAN MAXVALUE
+);
+
+ALTER TABLE customer PARTITION BY RANGE(latitude) (
+	PARTITION south VALUES LESS THAN (13),
+    PARTITION central VALUES LESS THAN (18),
+    PARTITION north VALUES LESS THAN MAXVALUE
+);
 
 #----- CREATE USER AND ROLE -----#
 CREATE USER 'vendor'@'localhost' IDENTIFIED BY 'vendor';
