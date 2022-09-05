@@ -24,4 +24,3 @@ db.dazala.insertMany([{_id: "PD001", category: "Smart Phone", brand: "Apple", co
 {_id: "PD024", category: "Clothes", brand: "LV", condition: "Old", made_in: "USA", description: "At its simplest, a skirt can be a draped garment made out of a single piece of fabric (such as pareos). However, most skirts are fitted to the body at the waist or hips and fuller below, with the fullness introduced by means of darts, gores, pleats, or panels"},
 {_id: "PD025", category: "Hat", brand: "Nike", condition: "New", made_in: "Vietnam", description: "Most Nike golf hats are made from a mixture of polyester, spandex and cotton"},
 {_id: "PD026", category: "Hat", brand: "Adidas", condition: "Old", made_in: "Vietnam", description: "The overall shape of the hat is an oval, with a turned up lip around the brim of the style and generally curved up sides. The primary feature of the hat is the center-dent crown though"}])
-

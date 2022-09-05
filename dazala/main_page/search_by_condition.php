@@ -42,7 +42,9 @@ $username = $_SESSION['username'];
                         <ul class="nav navbar-nav">
                             <li class="dropdown user-menu">
                                 <a href="javascript:;" class="dropdown-toggle" style="height: 55px;" data-toggle="dropdown">     
-
+                                    <?php
+                                        echo "<span class='hidden-xs'>Welcome " . $row['name']. "</span>";
+                                    ?>
                                     <br>
                                     <div style="text-align: center">
                                         <i class="fa-solid fa-caret-down"></i>
@@ -86,83 +88,73 @@ $username = $_SESSION['username'];
 
             <div class="content-wrapper" style="min-height: 696px;">
                 <section class="content-header">
-                    <h1 class="title">Search by Price</h1>
+                    <h1 class="title">Search by Condition</h1>
                 </section>
                 <section class="content">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="col-sm-6">
-                            <section class="search-form">
-                            <form action="" method="post">
-                                <div class="col-sm-5">.
-                                    <select name="category">
-                                        <option value="" style="font-family:Arial, FontAwesome" class="form-control" disabled selected>Choose category</option>
-                                        <option value="Smart Phone" style="font-family:Arial, FontAwesome" class="form-control">Smart Phone</option>
-                                        <option value="Laptop" style="font-family:Arial, FontAwesome" class="form-control">Laptop</option>
-                                        <option value="Fruit" style="font-family:Arial, FontAwesome" class="form-control">Fruit</option>
-                                        <option value="Beverage" style="font-family:Arial, FontAwesome" class="form-control">Beverage</option>
-                                        <option value="Dried Food" style="font-family:Arial, FontAwesome" class="form-control">Dried Food</option>
-                                        <option value="Shoes" style="font-family:Arial, FontAwesome" class="form-control">Shoes</option>
-                                        <option value="Clothes" style="font-family:Arial, FontAwesome" class="form-control">Clothes</option>
-                                        <option value="Hat" style="font-family:Arial, FontAwesome" class="form-control">Hat</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Apple">Apple</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Acer">Acer</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Samsung">Samsung</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Vertu">Vertu</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="MSI">MSI</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Klever Fruit">Klever Fruit</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Vinamrt">Vinmart</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Drinking&Chill">Drinking&Chill</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Starbucks">Starbucks</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Street Food Mall">Street Food Mall</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Nike">Nike</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="Adidas">Adidas</input>  
-                                </div>
-                                <div class="col-sm-5"> 
-                                    <input type="checkbox" name="brand[]" value="LV">LV</input>  
-                                </div>
-                                <div class="col-sm-2">
-                                    <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
-                                        <span>Search</span>
-                                    </button>
-                                </div>
-                            </form>
-                            </section>
-                            </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <button onclick='window.location.href="search_name.php";' class="form-control btn btn-primary">Search Product by Name</button> 
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                <button onclick='window.location.href="search_price.php";' class="form-control btn btn-primary">Search Product by Price</button> 
+                            </div>
+                            <div class="col-sm-4">
                                 <button onclick='window.location.href="search_distance.php";' class="form-control btn btn-primary">Search Vendor by Distance</button> 
                             </div>
                         </div>
                     </div>
                     <br>
+
+                    <div class="row">
+                        <div class="panel panel-bd">
+                            <div class="panel-body">
+                                <div class="col-md-11">
+                                    <section class="search-form">
+                                        <form action="" method="post">
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-3">
+                                                <select name="category" class="form-control">
+                                                    <option value="" disabled selected>Choose category</option>
+                                                    <option value="Smart Phone">Smart Phone</option>
+                                                    <option value="Laptop">Laptop</option>
+                                                    <option value="Fruit">Fruit</option>
+                                                    <option value="Beverage">Beverage</option>
+                                                    <option value="Dried Food">Dried Food</option>
+                                                    <option value="Shoes">Shoes</option>
+                                                    <option value="Clothes">Clothes</option>
+                                                    <option value="Hat">Hat</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <select name="brand[]" class="form-control" name="select" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2">
+                                                    <option value="Apple">Apple</option>
+                                                    <option value="Acer">Acer</option>
+                                                    <option value="Samsung">Samsung</option>
+                                                    <option value="Vertu">Vertu</option>
+                                                    <option value="MSI">MSI</option>
+                                                    <option value="Klever Fruit">Klever Fruit</option>
+                                                    <option value="Vinamrt">Vinamrt</option>
+                                                    <option value="Drinking&Chill">Drinking & Chill</option>
+                                                    <option value="Starbucks">Starbucks</option>
+                                                    <option value="Street Food Mall">Street Food Mall</option>
+                                                    <option value="Nike">Nike</option>
+                                                    <option value="Adidas">Adidas</option>
+                                                    <option value="LV">LV</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
+                                                    <span>Search</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box">
@@ -194,11 +186,17 @@ $username = $_SESSION['username'];
                                                             $stmt = $customer->query($sql);
                                                             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                                                            echo $row['id'] . "<br>";
-                                                            echo $row['name'] . "<br>";
-                                                            echo $row['price'] . "<br>";
-                                                            echo $row['quantity'] . "<br>";
-                                                            echo $row['ven_id'] . "<br><br>";
+                                                            echo '<tr>
+                                                            <th scope="row">'.$row['id'].'</th>
+                                                            <td>'.$row['name'].'</td>
+                                                            <td>$'.$row['price'].'</td>
+                                                            <td class="text-center">'.$row['quantity'].'</td>
+                                                            <td class="text-center">'.$row['ven_id'].'</td>
+                                                            <td class="text-center">
+                                                            <a href="display_product_detail_customer_page.php?prod_id='.$row['id'].'" class="btn btn-xs btn-default" style="background-color: #3c8dbc; color: White">View</a>
+                                                            <a href="orders.php?prod_id='.$row['id'].'" class="btn btn-xs btn-default" style="background-color: #6C9D2F; color: White">Buy</a>
+                                                            </td>
+                                                            </tr>';
                                                             
                                                         }
                                                     }
@@ -230,5 +228,6 @@ $username = $_SESSION['username'];
         <script src="../assets/iCheck/icheck.js" type="text/javascript"></script>
         <script src="../assets/js/exec/auth.js" type="text/javascript"></script>
         <script src="https://kit.fontawesome.com/443903aef7.js" crossorigin="anonymous"></script>
+        <script src="../assets/js/plugins/multiselect-dropdown.js" type="text/javascript"></script>
     </body>
 </html>

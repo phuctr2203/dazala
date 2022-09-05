@@ -89,16 +89,16 @@
                 <section class="content">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <button onclick='window.location.href="search_name.php";' class="form-control btn btn-primary">Search Product by Name</button> 
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <button onclick='window.location.href="search_price.php";' class="form-control btn btn-primary">Search Product by Price</button> 
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <button onclick='window.location.href="search_distance.php";' class="form-control btn btn-primary">Search Vendor by Distance</button> 
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <button onclick='window.location.href="search_by_condition.php";' class="form-control btn btn-primary">Search Product by Condition</button> 
                             </div>
                         </div>

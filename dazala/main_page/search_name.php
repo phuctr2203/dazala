@@ -103,11 +103,14 @@
                                 </form>
                             </section>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <button onclick='window.location.href="search_price.php";' class="form-control btn btn-primary">Search Product by Price</button> 
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <button onclick='window.location.href="search_distance.php";' class="form-control btn btn-primary">Search Vendor by Distance</button> 
+                            </div>
+                            <div class="col-sm-2">
+                                <button onclick='window.location.href="search_by_condition.php";' class="form-control btn btn-primary">Search Product by Condition</button> 
                             </div>
                         </div>
                     </div>
