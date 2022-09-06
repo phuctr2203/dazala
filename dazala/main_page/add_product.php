@@ -14,6 +14,7 @@ if (isset($_POST['act'])) {
     $category = $_POST['category'];
     $brand = $_POST['brand'];
     $condition = $_POST['condition'];
+    $made_in = $_POST['made_in'];
     $description = $_POST['description'];
 
     $sql_insert = "INSERT INTO product (name, price, quantity, ven_id) VALUES ('$name', $price, $quantity, '$ven_id')";
@@ -31,6 +32,7 @@ if (isset($_POST['act'])) {
         "category" => $category,
         "brand" => $brand,
         "condition" => $condition,
+        "made_in" => $made_in,
         "description" => $description
     ]);
 
@@ -160,7 +162,10 @@ if (isset($_POST['act'])) {
                     <input name="condition" type="text" class="form-control" placeholder="Condition" required>                    
                 </div>
                 <div class="form-group has-feedback">
-                    <input name="description" type="text" class="form-control" placeholder="Description" required>                    
+                    <input name="made_in" type="text" class="form-control" placeholder="Made In" required>                    
+                </div>
+                <div class="form-group has-feedback">
+                    <textarea name="description" type="text" class="form-control" placeholder="Description" rows="4" cols="50" required></textarea>                       
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
