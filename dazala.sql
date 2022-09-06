@@ -114,11 +114,9 @@ FOR EACH ROW
 BEGIN
   DECLARE random_time TIME;
   SELECT random_secs() into random_time;
-  START TRANSACTION;
   DO SLEEP(random_time);
   INSERT INTO orders_seq VALUES (NULL);
   SET NEW.id = CONCAT('OR', LPAD(LAST_INSERT_ID(), 3, '0'));
-  COMMIT;
 END$$
 DELIMITER ;
 
@@ -129,11 +127,10 @@ FOR EACH ROW
 BEGIN
   DECLARE random_time TIME;
   SELECT random_secs() into random_time;
-  START TRANSACTION;
   DO SLEEP(random_time);
-  COMMIT;
 END$$
 DELIMITER ;
+
 
 #----- DISTRIBUTION HUB -----#
 
@@ -241,8 +238,6 @@ FOREIGN KEY (hub_id) REFERENCES hub(id);
 
 #-------- GENERAL COMMAND ----------#
 
-#----- SELECT COMMAND ----#
-
 #----- INSERT COMMAND -----#
 insert into vendor(name, address, latitude, longtitude, username, password) values 
 ('Phuc', 'Hai Phong', 20.86, 106.70, 'phuc123', '123'),
@@ -289,9 +284,12 @@ insert into hub(name, address, latitude, longtitude) values
 ('GHTK', 'Nghe An', 18.68, 105.67);
 
 insert into shipper(name, username, password, hub_id) values
-('Long', 'long123', 'nguvcl', 'HB001'),
-('Tuan', 'tuan123', 'ditme', 'HB002'),
-('Ship', 'ship123', 'vailon', 'HB003');
+('Long', 'long123', '123', 'HB001'),
+('Long Be', 'longbe', '123', 'HB001'),
+('Tuan', 'tuan123', '123', 'HB002'),
+('Cui', 'cui123', '123', 'HB002'),
+('Ship', 'ship123', '123', 'HB003'),
+('GHTK Real', 'ghtk', '123', 'HB003');
 
 #----- DETELE COMMAND -----#
 
@@ -426,21 +424,37 @@ DELIMITER ;
 
 #----- Procedure finish order -----#
 DELIMITER $$
-CREATE PROCEDURE shipped_orders(IN orders_id VARCHAR(10))
+CREATE PROCEDURE shipped_orders(IN orders_id VARCHAR(10), OUT processed INT)
 BEGIN
+	DECLARE temp_status VARCHAR(10);
+    SELECT orders_status INTO temp_status FROM orders WHERE id = orders_id;
 	START TRANSACTION;
-	UPDATE orders SET orders_status = 'Shipped' WHERE id = orders_id;
-    COMMIT;
+	IF temp_status = 'Ready' THEN
+		UPDATE orders SET orders_status = 'Shipped' WHERE id = orders_id;
+		SELECT 1 INTO processed;
+		COMMIT;
+	ELSE 
+		ROLLBACK;
+        SELECT 0 INTO processed;
+	END IF;
 END $$
 DELIMITER ;
 
 #----- Procedure cancel order -----#
 DELIMITER $$
-CREATE PROCEDURE cancel_orders(IN orders_id VARCHAR(10))
+CREATE PROCEDURE cancel_orders(IN orders_id VARCHAR(10), OUT processed INT)
 BEGIN
+	DECLARE temp_status VARCHAR(10);
+    SELECT orders_status INTO temp_status FROM orders WHERE id = orders_id;
 	START TRANSACTION;
-	UPDATE orders SET orders_status = 'Cancelled' WHERE id = orders_id;
-    COMMIT;
+	IF temp_status = 'Ready' THEN
+		UPDATE orders SET orders_status = 'Cancelled' WHERE id = orders_id;
+        SELECT 1 INTO processed;
+		COMMIT;
+	ELSE 
+		ROLLBACK;
+        SELECT 0 INTO processed;
+	END IF;
 END $$
 DELIMITER ;
 
