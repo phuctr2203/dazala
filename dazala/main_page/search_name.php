@@ -104,13 +104,13 @@
                             </section>
                             </div>
                             <div class="col-sm-2">
-                                <button onclick='window.location.href="search_price.php";' class="form-control btn btn-primary">Search Product by Price</button> 
+                                <button onclick='window.location.href="search_price.php";' class="form-control btn btn-primary">Search by Price</button> 
                             </div>
                             <div class="col-sm-2">
-                                <button onclick='window.location.href="search_distance.php";' class="form-control btn btn-primary">Search Vendor by Distance</button> 
+                                <button onclick='window.location.href="search_distance.php";' class="form-control btn btn-primary">Search by Distance</button> 
                             </div>
                             <div class="col-sm-2">
-                                <button onclick='window.location.href="search_by_condition.php";' class="form-control btn btn-primary">Search Product by Condition</button> 
+                                <button onclick='window.location.href="search_by_condition.php";' class="form-control btn btn-primary">Search by Condition</button> 
                             </div>
                         </div>
                     </div>

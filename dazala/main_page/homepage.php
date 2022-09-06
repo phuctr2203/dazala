@@ -127,7 +127,7 @@
                                                     $sql = "SELECT * FROM product ORDER BY id DESC";
                                                     $result = mysqli_query($link_cus, $sql);
                                                     $num = mysqli_num_rows($result);
-                                                    $numberPages = 5;
+                                                    $numberPages = 11;
                                                     $totalPages = ceil($num/$numberPages);
                                                     //echo $totalPages;
                                                     // Creating pagination buttons
