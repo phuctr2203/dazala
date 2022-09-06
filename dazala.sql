@@ -436,12 +436,6 @@ ALTER TABLE product PARTITION BY RANGE(price) (
 	PARTITION p4 VALUES LESS THAN MAXVALUE
 );
 
-ALTER TABLE customer PARTITION BY RANGE(latitude) (
-	PARTITION south VALUES LESS THAN (13),
-    PARTITION central VALUES LESS THAN (18),
-    PARTITION north VALUES LESS THAN MAXVALUE
-);
-
 #----- Indexing -----#
 ALTER TABLE product ADD INDEX prod_ven_idx (ven_id);
 ALTER TABLE shipper ADD INDEX ship_hub_idx (hub_id);
