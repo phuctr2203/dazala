@@ -2,7 +2,9 @@ DROP DATABASE dazala;
 CREATE DATABASE dazala;
 USE dazala;
 
-SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+#----- SET TRANSACTION SCOPE -----#
+
+SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 
 #----- CREATE TABLE -----#
 #----- VENDOR -----#
@@ -112,9 +114,24 @@ FOR EACH ROW
 BEGIN
   DECLARE random_time TIME;
   SELECT random_secs() into random_time;
-  #DO SLEEP(random_time);
+  START TRANSACTION;
+  DO SLEEP(random_time);
   INSERT INTO orders_seq VALUES (NULL);
   SET NEW.id = CONCAT('OR', LPAD(LAST_INSERT_ID(), 3, '0'));
+  COMMIT;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER tg_orders_update
+BEFORE UPDATE ON orders
+FOR EACH ROW
+BEGIN
+  DECLARE random_time TIME;
+  SELECT random_secs() into random_time;
+  START TRANSACTION;
+  DO SLEEP(random_time);
+  COMMIT;
 END$$
 DELIMITER ;
 
@@ -426,15 +443,6 @@ BEGIN
     COMMIT;
 END $$
 DELIMITER ;
-
-#----- Partitioning -----#
-ALTER TABLE product PARTITION BY RANGE(price) (
-	PARTITION p0 VALUES LESS THAN (100),
-	PARTITION p1 VALUES LESS THAN (300),
-	PARTITION p2 VALUES LESS THAN (500),
-	PARTITION p3 VALUES LESS THAN (1000),	
-	PARTITION p4 VALUES LESS THAN MAXVALUE
-);
 
 #----- Indexing -----#
 ALTER TABLE product ADD INDEX prod_ven_idx (ven_id);
