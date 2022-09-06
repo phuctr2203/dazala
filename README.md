@@ -11,5 +11,5 @@
 <h3>Link to our web demo: ... </h3>
 
 <h3>Description</h3>
-Please pull the whole file. We wrote the script for both MySQL and MongoDB, you just need to copy it and paste to the shell. 
+Please pull the whole file. We wrote the script for both MySQL and MongoDB, you just need to copy it and paste to the shell. <br>
 Move folder "Dazala" to xampp and run localhost. Our website starts from file "index.html".
