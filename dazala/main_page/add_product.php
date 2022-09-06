@@ -90,7 +90,7 @@ if (isset($_POST['act'])) {
                 <div class="form-group has-feedback">Category</div>
                 <div class="row">
                     <div class="col-xs-4">
-                        <input type="radio" name="category" value="Smart Phone" required>Smart Phone</input>
+                        <input type="radio" name="category" value="Phone" required>Phone</input>
                     </div>
                     <div class="col-xs-4">
                         <input type="radio" name="category" value="Laptop" required>Laptop</input>
@@ -102,7 +102,7 @@ if (isset($_POST['act'])) {
                         <input type="radio" name="category" value="Beverage" required>Beverage</input>
                     </div>
                     <div class="col-xs-4">
-                        <input type="radio" name="category" value="Dried Food" required>Dried Food</input>
+                        <input type="radio" name="category" value="Food" required>Food</input>
                     </div>
                     <div class="col-xs-4">
                         <input type="radio" name="category" value="Shoes" required>Shoes</input>
