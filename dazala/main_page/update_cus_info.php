@@ -77,11 +77,11 @@ if (isset($_POST['act'])) {
         <link href="../assets/css/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body class="hold-transition login-page">
-        <form id="baseform" method="post"  role="form">
-            <div class="login-box">
-                <div class="login-logo">
-                    Edit Information
-                </div>
+        <div class="login-box">
+            <div class="login-logo">
+                Edit Information
+            </div>
+            <form id="baseform" method="post"  role="form">
                 <div class="login-box-body">
                     <div class="alert alert-danger" style="display: none;"></div>
                     <div class="form-group has-feedback">
@@ -99,17 +99,10 @@ if (isset($_POST['act'])) {
                     <div class="form-group has-feedback">
                         <input name="password" type="text" class="form-control" placeholder="Password" >                    
                     </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <button type="submit" name="act" value="UPDATE" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Edit Information</button>
-                        </div>
-                    </div>
+                    <button type="submit" name="act" value="UPDATE" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Edit Information</button>
                 </div>
-            </div>
-        </form>
-
-        <div class="col-xs-6">
-            <button onclick='window.location.href="homepage.php";' class="btn btn-primary btn-block btn-flat" style="background-color: #3c8dbc;">Back To Main Page</button> 
+            </form>
+            <button onclick='window.location.href="homepage.php";' class="btn btn-primary btn-block btn-flat" style="background-color: #3c8dbc;">Back To Main Page</button>
         </div>
         
         <script src="../../assets/jquery/jquery-2.2.3.min.js" type="text/javascript"></script>

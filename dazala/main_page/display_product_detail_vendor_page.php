@@ -84,7 +84,7 @@
                             </ul>
                         </li>
                         <br>
-                        <button onclick='window.location.href="vendor_product.php";' class="btn btn-primary btn-block btn-flat" style="background-color: #3c8dbc;">Back To Main Page</button>
+                        <button onclick='window.location.href="vendor_product.php";' class="form-control btn btn-primary" style="background-color: #3c8dbc;">Back To Main Page</button>
                     </ul>
                     <br>
                     <button onclick='window.location.href="add_product.php";' class="form-control btn btn-primary" style="background-color: #5941A9">Add Product</button> 

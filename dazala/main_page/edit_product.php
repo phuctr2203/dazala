@@ -58,15 +58,15 @@ if (isset($_POST['act'])) {
     </head>
 
     <body class="hold-transition login-page">
-        <form id="baseform" method="post"  role="form">
-            <div class="login-box">
-                <div class="login-logo">
-                    Edit Product
-                </div>
+        <div class="login-box">
+            <div class="login-logo">
+                Edit Product
+            </div>
+            <form id="baseform" method="post"  role="form">
                 <div class="login-box-body">
                     <div class="alert alert-danger" style="display: none;"></div>
                     <div class="form-group has-feedback">
-                        <input name="quantity" type="integer" class="form-control" placeholder="Quantity" required>                    
+                        <input name="quantity" type="integer" class="form-control" placeholder="Quantity" autofocus required>                    
                     </div>
                     <div class="form-group has-feedback">
                         <input name="price" type="decimal" class="form-control" placeholder="Price" required>                    
@@ -80,18 +80,12 @@ if (isset($_POST['act'])) {
                     <div class="form-group has-feedback">
                         <textarea name="description" type="text" class="form-control" placeholder="Description" rows="4" cols="50" required></textarea>                    
                     </div>
-
                     <div class="row">
-                        <div class="col-xs-6">
-                            <button type="submit" name="act" value="UPDATE" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Edit Product</button>
-                        </div>
+                        <button type="submit" name="act" value="UPDATE" class="btn btn-primary btn-block btn-flat" style="background-color: #6C9D2F;">Edit Product</button>
                     </div>
                 </div>
-            </div>
-        </form>
-
-        <div class="col-xs-6">
-            <button onclick='window.location.href="vendor_product.php";' class="btn btn-primary btn-block btn-flat" style="background-color: #3c8dbc;">Back To Main Page</button>  
+            </form>
+            <button onclick='window.location.href="vendor_product.php";' class="btn btn-primary btn-block btn-flat" style="background-color: #3c8dbc;">Back To Main Page</button> 
         </div>
 
         <script src="../../assets/jquery/jquery-2.2.3.min.js" type="text/javascript"></script>

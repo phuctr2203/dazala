@@ -90,21 +90,21 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="col-sm-6">
-                            <section class="search-form">
-                                <form action="" method="post">
-                                    <div class="col-sm-5">
-                                        <input type="float" name="start_price" placeholder="&#xF688; Start Price" style="font-family:Arial, FontAwesome" class="form-control" required>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <input type="float" name="end_price" placeholder="&#xF688; Start Price" style="font-family:Arial, FontAwesome" class="form-control" required>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
-                                            <span>Search</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            </section>
+                                <section class="search-form">
+                                    <form action="" method="post">
+                                        <div class="col-sm-5">
+                                            <input type="float" name="start_price" placeholder="&#xF688; Start Price" style="font-family:Arial, FontAwesome" class="form-control" required>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="float" name="end_price" placeholder="&#xF688; Start Price" style="font-family:Arial, FontAwesome" class="form-control" required>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
+                                                <span>Search</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </section>
                             </div>
                             <div class="col-sm-2">
                                 <button onclick='window.location.href="search_name.php";' class="form-control btn btn-primary">Search by Name</button> 

@@ -87,77 +87,37 @@ if (isset($_POST['act'])) {
                 <div class="form-group has-feedback">
                     <input name="quantity" type="int" class="form-control" placeholder="Quantity" required>                    
                 </div>
-                <div class="form-group has-feedback">Category</div>
-                <div class="row">
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Phone" required>Phone</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Laptop" required>Laptop</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Fruit" required>Fruit</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Beverage" required>Beverage</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Food" required>Food</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Shoes" required>Shoes</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Clothes" required>Clothes</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="category" value="Hat" required>Hat</input>
-                    </div>
+                <div class="form-group has-feedback">
+                    <select name="category" class="form-control">
+                        <option value="" disabled selected>Choose One Category</option>
+                        <option value="Phone">Phone</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Fruit">Fruit</option>
+                        <option value="Beverage">Beverage</option>
+                        <option value="Food">Food</option>
+                        <option value="Shoes">Shoes</option>
+                        <option value="Clothes">Clothes</option>
+                        <option value="Hat">Hat</option>
+                    </select>
                 </div>
-                <br>
-                <div class="form-group has-feedback">Brand</div>
-                <div class="row">
-                    <div class="col-xs-4">
-                        <input type="radio" name="brand" value="Apple" required>Apple</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="brand" value="Samsung" required>Samsung</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="brand" value="Vertu" required>Vertu</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="brand" value="Msi" required>MSI</input>
-                    </div>
-                    <div class="col-xs-4">
-                        <input type="radio" name="brand" value="Acer" required>Acer</input>
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="Klever Fruit">Klever Fruit</input>  
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="Vinamrt">Vinmart</input>  
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="Drinking&Chill">Drinking&Chill</input>  
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="Starbucks">Starbucks</input>  
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="Street Food Mall">Street Food Mall</input>  
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="Nike">Nike</input>  
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="Adidas">Adidas</input>  
-                    </div>
-                    <div class="col-sm-5"> 
-                        <input type="radio" name="brand" value="LV">LV</input>  
-                    </div>
+                <div class="form-group has-feedback">
+                    <select name="brand" class="form-control">
+                        <option value="" disabled selected>Choose One Brand/Option</option>
+                        <option value="Apple">Apple</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Vertu">Vertu</option>
+                        <option value="Msi">MSI</option>
+                        <option value="Acer">Acer</option>
+                        <option value="Klever Fruit">Klever Fruit</option>
+                        <option value="Vinamrt">Vinamrt</option>
+                        <option value="Drinking&Chill">Drinking & Chill</option>
+                        <option value="Starbucks">Starbucks</option>
+                        <option value="Street Food Mall">Street Food Mall</option>
+                        <option value="Nike">Nike</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="LV">Louis Vouton</option>
+                    </select>
                 </div>
-                <br>
                 <div class="form-group has-feedback">
                     <input name="condition" type="text" class="form-control" placeholder="Condition" required>                    
                 </div>

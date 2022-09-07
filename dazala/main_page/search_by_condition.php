@@ -93,50 +93,41 @@ $username = $_SESSION['username'];
                 <section class="content">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="col-sm-4">
-                                <button onclick='window.location.href="search_name.php";' class="form-control btn btn-primary">Search Product by Name</button> 
+                            <div class="col-sm-6">
+                                <section class="search-form">
+                                    <form action="" method="post">
+                                        <div class="col-sm-5">
+                                            <select name="attribute" class="form-control" required>
+                                                <option value="" disabled selected>Choose an Attribute</option>
+                                                <option value="category">Category</option>
+                                                <option value="brand">Brand</option>
+                                                <option value="condition">Condition</option>
+                                                <option value="made in">Made In</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="text" name="search_data" placeholder="&#xF002; Search Condition" style="font-family:Arial, FontAwesome" class="form-control" required>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
+                                                <span>Search</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </section>
                             </div>
-                            <div class="col-sm-4">
-                                <button onclick='window.location.href="search_price.php";' class="form-control btn btn-primary">Search Product by Price</button> 
+                            <div class="col-sm-2">
+                                <button onclick='window.location.href="search_name.php";' class="form-control btn btn-primary">Search by Name</button> 
                             </div>
-                            <div class="col-sm-4">
-                                <button onclick='window.location.href="search_distance.php";' class="form-control btn btn-primary">Search Vendor by Distance</button> 
+                            <div class="col-sm-2">
+                                <button onclick='window.location.href="search_price.php";' class="form-control btn btn-primary">Search by Price</button> 
+                            </div>
+                            <div class="col-sm-2">
+                                <button onclick='window.location.href="search_distance.php";' class="form-control btn btn-primary">Search by Distance</button> 
                             </div>
                         </div>
                     </div>
                     <br>
-
-                    <div class="row">
-                        <div class="panel panel-bd">
-                            <div class="panel-body">
-                                <div class="col-md-11">
-                                    <section class="search-form">
-                                        <form action="" method="post">
-                                            <div class="col-sm-3"></div>
-                                            <div class="col-sm-3">
-                                                <select name="attribute" class="form-control" required>
-                                                    <option value="" disabled selected>Choose an Attribute</option>
-                                                    <option value="category">Category</option>
-                                                    <option value="brand">Brand</option>
-                                                    <option value="condition">Condition</option>
-                                                    <option value="made in">Made In</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <input type="text" name="search_data" placeholder="Search Condition" required>
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
-                                                    <span>Search</span>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box">
@@ -207,6 +198,5 @@ $username = $_SESSION['username'];
         <script src="../assets/iCheck/icheck.js" type="text/javascript"></script>
         <script src="../assets/js/exec/auth.js" type="text/javascript"></script>
         <script src="https://kit.fontawesome.com/443903aef7.js" crossorigin="anonymous"></script>
-        <script src="../assets/js/plugins/multiselect-dropdown.js" type="text/javascript"></script>
     </body>
 </html>

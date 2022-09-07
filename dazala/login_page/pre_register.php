@@ -27,13 +27,13 @@
             <div class="login-box-body">
                 <div class="row">
                     <div class="col-xs-4">
-                        <input type=button onClick="location.href='ven_register.php'" value='Vendor' class="btn btn-primary btn-block btn-flat" style="background-color: blue;">
+                        <input type=button onClick="location.href='ven_register.php'" value='Vendor' class="btn btn-primary btn-block btn-flat" style="background-color: light blue;">
                     </div>
                     <div class="col-xs-4">
-                        <input type=button onClick="location.href='cus_register.php'" value='Customer' class="btn btn-primary btn-block btn-flat" style="background-color: blue;">
+                        <input type=button onClick="location.href='cus_register.php'" value='Customer' class="btn btn-primary btn-block btn-flat" style="background-color: light blue;">
                     </div>
                     <div class="col-xs-4">
-                        <input type=button onClick="location.href='ship_register.php'" value='Shipper' class="btn btn-primary btn-block btn-flat" style="background-color: blue;">
+                        <input type=button onClick="location.href='ship_register.php'" value='Shipper' class="btn btn-primary btn-block btn-flat" style="background-color: light blue;">
                     </div>
                 </div>
             </div>
