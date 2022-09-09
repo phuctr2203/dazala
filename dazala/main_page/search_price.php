@@ -96,7 +96,7 @@
                                             <input type="float" name="start_price" placeholder="&#xF688; Start Price" style="font-family:Arial, FontAwesome" class="form-control" required>
                                         </div>
                                         <div class="col-sm-5">
-                                            <input type="float" name="end_price" placeholder="&#xF688; Start Price" style="font-family:Arial, FontAwesome" class="form-control" required>
+                                            <input type="float" name="end_price" placeholder="&#xF688; End Price" style="font-family:Arial, FontAwesome" class="form-control" required>
                                         </div>
                                         <div class="col-sm-2">
                                             <button name="submit" value="search" class="form-control btn btn-primary" type="submit">
