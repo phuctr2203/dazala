@@ -5,7 +5,7 @@
   <li>Tran Hoang Phuc - s3911244: 25%</li>
   <li>Nguyen Tri Dung - s3883630: 25%</li>
   <li>Nguyen Huy Binh - s3883631: 25%</li>
-  <li>Bui Tuan Linh - ???: 25%</li>
+  <li>Bui Tuan Linh - s3877765: 25%</li>
 </ul>
 
 <h3>Link to our web demo: ... </h3>
