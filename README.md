@@ -8,7 +8,7 @@
   <li>Bui Tuan Linh - s3877765: 25%</li>
 </ul>
 
-<h3>Link to our web demo: ... </h3>
+<h3>Link to our web demo: https://rmiteduau-my.sharepoint.com/personal/s3883631_rmit_edu_vn/_layouts/15/stream.aspx?id=%2Fpersonal%2Fs3883631%5Frmit%5Fedu%5Fvn%2FDocuments%2FDatabase%20Presentation%2Emov&ga=1 </h3>
 
 <h3>Description</h3>
 Please pull the whole file. We wrote the script for both MySQL and MongoDB, you just need to copy it and paste to the shell. <br>
