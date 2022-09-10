@@ -13,3 +13,4 @@
 <h3>Description</h3>
 Please pull the whole file. We wrote the script for both MySQL and MongoDB, you just need to copy it and paste to the shell. <br>
 Move folder "Dazala" to xampp and run localhost. Our website starts from file "index.html".
+For MongoDB, we have file dazala.json for you to import database into your local machine with MongoDBCompass. You must name the database "dazala" and then create a collection name "dazala" so that it works for the whole system.
