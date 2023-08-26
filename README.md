@@ -9,6 +9,7 @@
 </ul>
 
 <h3>Link to our web demo: https://youtu.be/GTq2AmQvudw </h3>
+
 <h3>Description</h3>
 •	Work in a team of 4 to implement an e-commercial web application using HTML, CSS, PHP for website development and MySQL, MongoDB for databases design from scratch.<br>
 •	Manage team’s workflow as a project manager. Design and implement SQL and NoSQL databases and connect to the website using PHP.<br>
